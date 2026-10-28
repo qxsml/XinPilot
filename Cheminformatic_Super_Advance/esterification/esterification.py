@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1][C:2](=O)[O;H1].[O;H1:3][*:4]>>[*:1][C:2](=O)[O:3][*:4]','output/esterification_products.csv','esterification'))

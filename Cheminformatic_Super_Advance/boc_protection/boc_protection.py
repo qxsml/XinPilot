@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[N;H1,H2:1].CC(C)(C)OC(=O)O[C:2](=O)O>>[N:1]C(=O)OC(C)(C)C','output/boc_protection_products.csv','boc_protection'))

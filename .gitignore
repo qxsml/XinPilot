@@ -1,0 +1,43 @@
+# Local runtimes and developer configuration
+.venv/
+.desktop-deps/
+.desktop-tooling/
+syntrack.local.bat
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# Generated data and historical developer material
+artifacts/
+archive/
+.build/
+build/
+dist/
+outputs/
+desktop-workspace/
+# Personal settings and stock data (preserved locally)
+fastsolv_local.json
+Compound_Stock_GUI_settings.json
+BB Stock list*.xlsx
+# Provenance reports may contain original machine paths
+docs/provenance/
+
+# Better Frame local development records and current branding
+xinpilot.local.bat
+rxnpilot.local.bat
+refactor-records/
+validation/
+node_modules/
+release/
+
+# Checked-in browser resources are required for offline launch.
+!desktop/live_ui/dist/
+!desktop/live_ui/dist/**
+!ketcher_bridge/dist/
+!ketcher_bridge/dist/**
+
+# Never commit local binaries, caches or credentials.
+*.exe
+*.dll
+.ruff_cache/
+.env
+.env.*

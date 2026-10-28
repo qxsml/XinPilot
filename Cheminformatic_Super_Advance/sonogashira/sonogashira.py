@@ -1,0 +1,1 @@
+from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1][Br,Cl,I:2].[*:3][C:4]#[CH:5]>>[*:1][C:5]#[C:4][*:3]','output/sonogashira_products.csv','sonogashira'))

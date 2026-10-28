@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[CH:1](=O)[*:2].[N;H1,H2:3]>>[CH2:1]([*:2])[N:3]','output/reductive_amination_aldehyde_products.csv','reductive_amination_aldehyde'))

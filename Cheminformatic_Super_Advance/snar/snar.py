@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[c:1][F,Cl:2].[N;H1,H2:3]>>[c:1][N:3]','output/snar_products.csv','snar'))

@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[O;H1:1].[*:2][Br,Cl,I:3]>>[O:1][*:2]','output/williamson_ether_products.csv','williamson_ether'))

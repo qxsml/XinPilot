@@ -1,0 +1,11 @@
+XinPilot
+Copyright 2026 Xin Qiu
+
+XinPilot's original code is licensed under the Apache License, Version 2.0.
+See LICENSE for the full terms.
+
+This distribution includes third-party software under its respective licenses.
+The copyright notice above does not claim ownership of third-party code.
+See THIRD_PARTY_NOTICES.md and third_party/ for retained licenses and notices.
+PyParse provenance and modifications are documented in PyParse/PROVENANCE.md
+and Modified PyParse/MODIFICATIONS.md.

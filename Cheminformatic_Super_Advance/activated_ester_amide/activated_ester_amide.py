@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1]C(=O)O[*:2].[N;H1,H2:3]>>[*:1]C(=O)[N:3]','output/activated_ester_amide_products.csv','activated_ester_amide'))

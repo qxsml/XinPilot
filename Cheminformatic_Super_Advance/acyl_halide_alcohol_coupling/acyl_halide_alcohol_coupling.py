@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1]C(=O)[Cl,Br,I].[O;H1:2]>>[*:1]C(=O)[O:2]','output/acyl_halide_alcohol_coupling_products.csv','acyl_halide_alcohol_coupling'))

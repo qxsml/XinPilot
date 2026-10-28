@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1]C(=O)O[C:2](=O)[*:3].[N;H1,H2:4]>>[*:1]C(=O)[N:4]','output/anhydride_amine_coupling_products.csv','anhydride_amine_coupling'))

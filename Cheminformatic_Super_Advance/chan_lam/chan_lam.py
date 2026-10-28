@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[c:1]B(O)O.[N;H1,H2:2]>>[c:1][N:2]','output/chan_lam_products.csv','chan_lam'))

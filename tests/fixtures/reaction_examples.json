@@ -1,0 +1,336 @@
+[
+  {
+    "reaction": "suzuki",
+    "inputs": [
+      "Brc1ccccc1",
+      "OB(O)c1ccccc1"
+    ],
+    "expected": "c1ccc(-c2ccccc2)cc1"
+  },
+  {
+    "reaction": "buchwald_hartwig",
+    "inputs": [
+      "Brc1ccccc1",
+      "CN"
+    ],
+    "expected": "CNc1ccccc1"
+  },
+  {
+    "reaction": "snar",
+    "inputs": [
+      "Fc1ncccc1",
+      "CN"
+    ],
+    "expected": "CNc1ccccn1"
+  },
+  {
+    "reaction": "amide_coupling",
+    "inputs": [
+      "CC(=O)O",
+      "CN"
+    ],
+    "expected": "CNC(C)=O"
+  },
+  {
+    "reaction": "sulfonamide_formation",
+    "inputs": [
+      "CS(=O)(=O)Cl",
+      "CN"
+    ],
+    "expected": "CNS(C)(=O)=O"
+  },
+  {
+    "reaction": "sonogashira",
+    "inputs": [
+      "Brc1ccccc1",
+      "CC#C"
+    ],
+    "expected": "CC#Cc1ccccc1"
+  },
+  {
+    "reaction": "heck",
+    "inputs": [
+      "Brc1ccccc1",
+      "C=CC(=O)OC"
+    ],
+    "expected": "COC(=O)C=Cc1ccccc1"
+  },
+  {
+    "reaction": "esterification",
+    "inputs": [
+      "CC(=O)O",
+      "CCO"
+    ],
+    "expected": "CCOC(C)=O"
+  },
+  {
+    "reaction": "reductive_amination",
+    "inputs": [
+      "CC(=O)C",
+      "CN"
+    ],
+    "expected": "CNC(C)C"
+  },
+  {
+    "reaction": "sn2_alkylation",
+    "inputs": [
+      "CCBr",
+      "CN"
+    ],
+    "expected": "CCNC"
+  },
+  {
+    "reaction": "click_triazole",
+    "inputs": [
+      "CN=[N+]=[N-]",
+      "CC#C"
+    ],
+    "expected": "Cc1cn(C)nn1"
+  },
+  {
+    "reaction": "acyl_halide_amine_coupling",
+    "inputs": [
+      "CC(=O)Cl",
+      "CN"
+    ],
+    "expected": "CNC(C)=O"
+  },
+  {
+    "reaction": "mitsunobu",
+    "inputs": [
+      "CCO",
+      "Oc1ccccc1"
+    ],
+    "expected": "CCOc1ccccc1"
+  },
+  {
+    "reaction": "williamson_ether",
+    "inputs": [
+      "Oc1ccccc1",
+      "CCBr"
+    ],
+    "expected": "CCOc1ccccc1"
+  },
+  {
+    "reaction": "boc_protection",
+    "inputs": [
+      "CN",
+      "CC(C)(C)OC(=O)OC(=O)OC(C)(C)C"
+    ],
+    "expected": "CNC(=O)OC(C)(C)C"
+  },
+  {
+    "reaction": "boc_deprotection",
+    "inputs": [
+      "CNC(=O)OC(C)(C)C"
+    ],
+    "expected": "CN"
+  },
+  {
+    "reaction": "ullmann_cn",
+    "inputs": [
+      "Ic1ccccc1",
+      "CN"
+    ],
+    "expected": "CNc1ccccc1"
+  },
+  {
+    "reaction": "chan_lam",
+    "inputs": [
+      "OB(O)c1ccccc1",
+      "CN"
+    ],
+    "expected": "CNc1ccccc1"
+  },
+  {
+    "reaction": "acyl_halide_alcohol_coupling",
+    "inputs": [
+      "CC(=O)Cl",
+      "CCO"
+    ],
+    "expected": "CCOC(C)=O"
+  },
+  {
+    "reaction": "anhydride_amine_coupling",
+    "inputs": [
+      "CC(=O)OC(C)=O",
+      "CN"
+    ],
+    "expected": "CNC(C)=O"
+  },
+  {
+    "reaction": "activated_ester_amide",
+    "inputs": [
+      "CC(=O)ON1C(=O)CCC1=O",
+      "CN"
+    ],
+    "expected": "CNC(C)=O"
+  },
+  {
+    "reaction": "reductive_amination_aldehyde",
+    "inputs": [
+      "CC=O",
+      "CN"
+    ],
+    "expected": "CCNC"
+  },
+  {
+    "reaction": "reductive_amination_ketone",
+    "inputs": [
+      "CC(=O)C",
+      "CN"
+    ],
+    "expected": "CNC(C)C"
+  },
+  {
+    "reaction": "urea_isocyanate",
+    "inputs": [
+      "CN=C=O",
+      "CN"
+    ],
+    "expected": "CNC(=O)NC"
+  },
+  {
+    "reaction": "curtius",
+    "inputs": [
+      "CC(=O)O",
+      "CN"
+    ],
+    "expected": "CNC(=O)NC"
+  },
+  {
+    "reaction": "acid_to_amine",
+    "inputs": [
+      "CCC(=O)O"
+    ],
+    "expected": "CCN"
+  },
+  {
+    "reaction": "isocyanate_to_amine",
+    "inputs": [
+      "CCN=C=O"
+    ],
+    "expected": "CCN"
+  },
+  {
+    "reaction": "nitro_reduction",
+    "inputs": [
+      "O=[N+]([O-])c1ccccc1"
+    ],
+    "expected": "Nc1ccccc1"
+  },
+  {
+    "reaction": "alcohol_oxidation",
+    "inputs": [
+      "CCO"
+    ],
+    "expected": "CC=O"
+  },
+  {
+    "reaction": "carbonyl_reduction",
+    "inputs": [
+      "CC(=O)C"
+    ],
+    "expected": "CC(C)O"
+  },
+  {
+    "reaction": "alkene_hydrogenation",
+    "inputs": [
+      "CC=C"
+    ],
+    "expected": "CCC"
+  },
+  {
+    "reaction": "ester_hydrolysis",
+    "inputs": [
+      "CC(=O)OCC"
+    ],
+    "expected": "CC(=O)O"
+  },
+  {
+    "reaction": "amide_hydrolysis",
+    "inputs": [
+      "CC(=O)NC"
+    ],
+    "expected": "CC(=O)O"
+  },
+  {
+    "reaction": "cbz_deprotection",
+    "inputs": [
+      "CNC(=O)OCc1ccccc1"
+    ],
+    "expected": "CN"
+  },
+  {
+    "reaction": "silyl_ether_deprotection",
+    "inputs": [
+      "CCO[Si](C)(C)C"
+    ],
+    "expected": "CCO"
+  },
+  {
+    "reaction": "carbamate_isocyanate",
+    "inputs": [
+      "CN=C=O",
+      "CCO"
+    ],
+    "expected": "CCOC(=O)NC"
+  },
+  {
+    "reaction": "thiourea_isothiocyanate",
+    "inputs": [
+      "CN=C=S",
+      "CN"
+    ],
+    "expected": "CNC(=S)NC"
+  },
+  {
+    "reaction": "alcohol_sulfonylation",
+    "inputs": [
+      "CS(=O)(=O)Cl",
+      "CCO"
+    ],
+    "expected": "CCOS(C)(=O)=O"
+  },
+  {
+    "reaction": "n_alkylation",
+    "inputs": [
+      "CCBr",
+      "CN"
+    ],
+    "expected": "CCNC"
+  },
+  {
+    "reaction": "o_alkylation",
+    "inputs": [
+      "CCBr",
+      "CO"
+    ],
+    "expected": "CCOC"
+  },
+  {
+    "reaction": "oxime_formation",
+    "inputs": [
+      "CC(=O)C",
+      "NO"
+    ],
+    "expected": "CC(C)=NO"
+  },
+  {
+    "reaction": "amine_epoxide_opening",
+    "inputs": [
+      "C1CO1",
+      "CN"
+    ],
+    "expected": "CNCCO"
+  },
+  {
+    "reaction": "petasis",
+    "inputs": [
+      "O=CC(=O)O",
+      "CN",
+      "OB(O)c1ccccc1"
+    ],
+    "expected": "CNC(C(=O)O)c1ccccc1"
+  }
+]

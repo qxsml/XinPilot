@@ -1,0 +1,909 @@
+﻿{
+    "reactions":  [
+                      {
+                          "id":  "urea_isocyanate",
+                          "label":  "Make Urea by Isocyanate",
+                          "type":  "python_script",
+                          "working_dir":  "make urea by isocyanate",
+                          "script":  "make urea by isocyanate.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "nu_csv",
+                                                      "label":  "Nucleophile details",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_csv",
+                                                      "label":  "Electrophile details",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "key":  "nu_map",
+                                                      "label":  "Nucleophile map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_map",
+                                                      "label":  "Electrophile map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "prod_map",
+                                                      "label":  "Product map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/urea_products.csv"
+                      },
+                      {
+                          "id":  "curtius",
+                          "label":  "Curtius Urea Formation (Acid + Amine)",
+                          "type":  "python_script",
+                          "working_dir":  "Curtius Rearrangement",
+                          "script":  "Curtius Rearrangement.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "nu_csv",
+                                                      "label":  "Nucleophile details",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_csv",
+                                                      "label":  "Electrophile details",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "key":  "nu_map",
+                                                      "label":  "Nucleophile map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_map",
+                                                      "label":  "Electrophile map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "prod_map",
+                                                      "label":  "Product map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/curtius_products.csv"
+                      },
+                      {
+                          "id":  "acid_to_amine",
+                          "label":  "Acid to Amine",
+                          "type":  "python_script",
+                          "working_dir":  "acid to amine",
+                          "script":  "acid to amine.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "acid_csv",
+                                                      "label":  "Acid details",
+                                                      "target":  "input/acid.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/amine.csv"
+                      },
+                      {
+                          "id":  "isocyanate_to_amine",
+                          "label":  "Isocyanate to Amine",
+                          "type":  "python_script",
+                          "working_dir":  "isocyanate to amine",
+                          "script":  "isocyanate_to_amine.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "isocyanate_csv",
+                                                      "label":  "Isocyanate details",
+                                                      "target":  "input/isocyanate.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/isocyanate_hydrolyzed.csv"
+                      },
+                      {
+                          "id":  "suzuki",
+                          "label":  "Suzuki Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "suzuki",
+                          "script":  "suzuki.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "nu_csv",
+                                                      "label":  "Boronic acid details",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_csv",
+                                                      "label":  "Aryl halide details",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "key":  "nu_map",
+                                                      "label":  "Boronic acid map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_map",
+                                                      "label":  "Aryl halide map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "prod_map",
+                                                      "label":  "Product map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/suzuki_products.csv"
+                      },
+                      {
+                          "id":  "buchwald_hartwig",
+                          "label":  "Buchwald-Hartwig Amination",
+                          "type":  "python_script",
+                          "working_dir":  "buchwald_hartwig",
+                          "script":  "buchwald_hartwig.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "nu_csv",
+                                                      "label":  "Amine details",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_csv",
+                                                      "label":  "Aryl halide details",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "key":  "nu_map",
+                                                      "label":  "Amine map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_map",
+                                                      "label":  "Aryl halide map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "prod_map",
+                                                      "label":  "Product map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/buchwald_hartwig_products.csv"
+                      },
+                      {
+                          "id":  "snar",
+                          "label":  "SNAr",
+                          "type":  "python_script",
+                          "working_dir":  "snar",
+                          "script":  "snar.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "key":  "nu_csv",
+                                                      "label":  "Nucleophile details",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_csv",
+                                                      "label":  "Activated aryl halide details",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "key":  "nu_map",
+                                                      "label":  "Nucleophile map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "el_map",
+                                                      "label":  "Electrophile map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "key":  "prod_map",
+                                                      "label":  "Product map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/snar_products.csv"
+                      },
+                      {
+                          "id":  "amide_coupling",
+                          "label":  "Amide Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "amide_coupling",
+                          "script":  "amide_coupling.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/amide_coupling_products.csv"
+                      },
+                      {
+                          "id":  "sulfonamide_formation",
+                          "label":  "Sulfonamide Formation",
+                          "type":  "python_script",
+                          "working_dir":  "sulfonamide_formation",
+                          "script":  "sulfonamide_formation.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/sulfonamide_formation_products.csv"
+                      },
+                      {
+                          "id":  "sonogashira",
+                          "label":  "Sonogashira Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "sonogashira",
+                          "script":  "sonogashira.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/sonogashira_products.csv"
+                      },
+                      {
+                          "id":  "heck",
+                          "label":  "Heck Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "heck",
+                          "script":  "heck.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/heck_products.csv"
+                      },
+                      {
+                          "id":  "esterification",
+                          "label":  "Esterification",
+                          "type":  "python_script",
+                          "working_dir":  "esterification",
+                          "script":  "esterification.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/esterification_products.csv"
+                      },
+                      {
+                          "id":  "reductive_amination",
+                          "label":  "Reductive Amination",
+                          "type":  "python_script",
+                          "working_dir":  "reductive_amination",
+                          "script":  "reductive_amination.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/reductive_amination_products.csv"
+                      },
+                      {
+                          "id":  "sn2_alkylation",
+                          "label":  "SN2 Alkylation",
+                          "type":  "python_script",
+                          "working_dir":  "sn2_alkylation",
+                          "script":  "sn2_alkylation.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/sn2_alkylation_products.csv"
+                      },
+                      {
+                          "id":  "click_triazole",
+                          "label":  "Click Triazole (CuAAC)",
+                          "type":  "python_script",
+                          "working_dir":  "click_triazole",
+                          "script":  "click_triazole.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/click_triazole_products.csv"
+                      },
+                      {
+                          "id":  "acyl_halide_amine_coupling",
+                          "label":  "Acyl Halide + Amine Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "acyl_halide_amine_coupling",
+                          "script":  "acyl_halide_amine_coupling.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/acyl_halide_amine_coupling_products.csv"
+                      },
+                      {
+                          "id":  "mitsunobu",
+                          "label":  "Mitsunobu Reaction",
+                          "type":  "python_script",
+                          "working_dir":  "mitsunobu",
+                          "script":  "mitsunobu.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/mitsunobu_products.csv"
+                      },
+                      {
+                          "id":  "williamson_ether",
+                          "label":  "Williamson Ether Synthesis",
+                          "type":  "python_script",
+                          "working_dir":  "williamson_ether",
+                          "script":  "williamson_ether.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/williamson_ether_products.csv"
+                      },
+                      {
+                          "id":  "boc_protection",
+                          "label":  "N-Boc Protection",
+                          "type":  "python_script",
+                          "working_dir":  "boc_protection",
+                          "script":  "boc_protection.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/boc_protection_products.csv"
+                      },
+                      {
+                          "id":  "boc_deprotection",
+                          "label":  "Boc Deprotection",
+                          "type":  "python_script",
+                          "working_dir":  "boc_deprotection",
+                          "script":  "boc_deprotection.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/boc_deprotection_products.csv"
+                      },
+                      {
+                          "id":  "ullmann_cn",
+                          "label":  "Ullmann C-N Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "ullmann_cn",
+                          "script":  "ullmann_cn.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/ullmann_cn_products.csv"
+                      },
+                      {
+                          "id":  "chan_lam",
+                          "label":  "Chan-Lam Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "chan_lam",
+                          "script":  "chan_lam.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/chan_lam_products.csv"
+                      },
+                      {
+                          "id":  "acyl_halide_alcohol_coupling",
+                          "label":  "Acyl Halide + Alcohol Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "acyl_halide_alcohol_coupling",
+                          "script":  "acyl_halide_alcohol_coupling.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/acyl_halide_alcohol_coupling_products.csv"
+                      },
+                      {
+                          "id":  "anhydride_amine_coupling",
+                          "label":  "Anhydride + Amine Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "anhydride_amine_coupling",
+                          "script":  "anhydride_amine_coupling.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/anhydride_amine_coupling_products.csv"
+                      },
+                      {
+                          "id":  "activated_ester_amide",
+                          "label":  "Activated Ester + Amine Coupling",
+                          "type":  "python_script",
+                          "working_dir":  "activated_ester_amide",
+                          "script":  "activated_ester_amide.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/activated_ester_amide_products.csv"
+                      },
+                      {
+                          "id":  "reductive_amination_aldehyde",
+                          "label":  "Reductive Amination (Aldehyde)",
+                          "type":  "python_script",
+                          "working_dir":  "reductive_amination_aldehyde",
+                          "script":  "reductive_amination_aldehyde.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/reductive_amination_aldehyde_products.csv"
+                      },
+                      {
+                          "id":  "reductive_amination_ketone",
+                          "label":  "Reductive Amination (Ketone)",
+                          "type":  "python_script",
+                          "working_dir":  "reductive_amination_ketone",
+                          "script":  "reductive_amination_ketone.py",
+                          "required_inputs":  [
+                                                  {
+                                                      "label":  "Nucleophile details",
+                                                      "key":  "nu_csv",
+                                                      "target":  "input/nu.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile details",
+                                                      "key":  "el_csv",
+                                                      "target":  "input/el.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Nucleophile map",
+                                                      "key":  "nu_map",
+                                                      "target":  "input/nu_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Electrophile map",
+                                                      "key":  "el_map",
+                                                      "target":  "input/el_map.csv"
+                                                  },
+                                                  {
+                                                      "label":  "Product map",
+                                                      "key":  "prod_map",
+                                                      "target":  "input/prod_map.csv"
+                                                  }
+                                              ],
+                          "output_hint":  "output/reductive_amination_ketone_products.csv"
+                      }
+                  ]
+}

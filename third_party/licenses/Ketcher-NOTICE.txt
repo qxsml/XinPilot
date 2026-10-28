@@ -1,0 +1,10 @@
+Ketcher 3.15.0
+Copyright (c) EPAM Systems
+
+This distribution includes a compiled Ketcher web application. Ketcher is
+available under the Apache License, Version 2.0.
+
+Upstream release: https://github.com/epam/ketcher/releases/tag/v3.15.0
+Upstream commit: c9ec64c2151ef36b2b10863e6a243b87cd1b7d12
+Bundled asset: ketcher_bridge/dist/assets/index-DelU5jBo.js
+Bundled asset SHA-256: DC35BEAEB0DAA37328B5F111F01155C76B85E9D088CC213C1B153DFC199134A9

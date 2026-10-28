@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1][C:2](=O)[O;H1].[N;H1,H2:3]>>[*:1][C:2](=O)[N:3]','output/amide_coupling_products.csv','amide_coupling'))

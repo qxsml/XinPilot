@@ -1,0 +1,4 @@
+ID,SMILES,Vendor,Catalog_Number
+ACID-001,CC(=O)O,Example Supplier,EX-A001
+ACID-002,CCC(=O)O,Example Supplier,EX-A002
+ACID-003,O=C(O)c1ccccc1,Example Supplier,EX-A003

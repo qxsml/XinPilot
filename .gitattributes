@@ -1,0 +1,10 @@
+# Preserve exact source bytes, including the protected PyParse baseline and
+# SOURCE_SHA256 inventory. Plain text remains diffable; no EOL conversion.
+* -text
+*.zip binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XinPilot Reaction Sketcher</title>
+    <script>
+      window.global = window.global || window;
+      var require = window.require = function (name) {
+        if (name === 'raphael') {
+          return window.Raphael;
+        }
+        if (name === 'ajv/dist/runtime/ucs2length') {
+          return { default: function (value) { return Array.from(String(value || '')).length; } };
+        }
+        if (name === 'ajv/dist/runtime/equal') {
+          return {
+            default: function equal(a, b) {
+              if (a === b) return true;
+              try { return JSON.stringify(a) === JSON.stringify(b); } catch (_) { return false; }
+            }
+          };
+        }
+        throw new Error('Unsupported browser require: ' + name);
+      };
+    </script>
+    <script type="module" crossorigin src="/assets/index-DelU5jBo.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CylNBmto.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

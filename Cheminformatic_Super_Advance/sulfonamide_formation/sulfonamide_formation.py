@@ -1,0 +1,1 @@
+﻿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1]S(=O)(=O)[Cl].[N;H1,H2:2]>>[*:1]S(=O)(=O)[N:2]','output/sulfonamide_formation_products.csv','sulfonamide_formation'))

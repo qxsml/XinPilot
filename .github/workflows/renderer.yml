@@ -1,0 +1,21 @@
+name: Renderer type checking and bundle
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  renderer:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --no-audit --no-fund
+        working-directory: desktop/live_ui
+      - run: npm run build
+        working-directory: desktop/live_ui
+      - run: git diff --exit-code -- desktop/live_ui/dist/app.js
