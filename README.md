@@ -1,91 +1,90 @@
 # XinPilot
 
-Includes AutoLynx CSV export in Cheminformatics > LCMS Input. See [export guide](docs/autolynx-export.md).
+**An open-source desktop application connecting compound records, synthesis planning and LC–MS review for high-throughput chemistry.**
 
-**Version 1.2.3, 25 October 2026:** the source and matching Windows executable include the chemistry and Opentrons corrections. See [release notes](docs/release-1.2.3.md) and [correction details](docs/source-fixes-20261025.md).
+XinPilot helps chemists keep experimental information together across the synthesis workflow. It links compound identities and stock solutions with liquid-handling plans, expected product structures, reaction conditions and analytical results within a portable project.
 
-XinPilot is a Windows desktop notebook for connected, plate-based synthetic
-chemistry. It links compound stocks, Tecan/Opentrons/manual plans, expected
-products, LC-MS review and subsequent synthesis steps in portable projects.
+XinPilot runs locally on Windows and provides a TypeScript interface with Python-based chemistry and workflow functions. It supports manual additions, Tecan and Opentrons planning, and the import of transfer records from other liquid-handling platforms.
 
-**Unified reaction-plate edition with AutoLynx export.** This edition
-uses the modular desktop architecture and TypeScript interface, including
-external transfer import and project change tracking.
+## Connected experimental workflows
 
-See [release history](docs/release-1.2.0.md).
+### Compound and stock records
 
-This release includes the [13 October controller corrections](docs/source-fixes-20261013.md) and combines horizontal and vertical Tecan additions on one horizontal reaction map.
+Compound Notes stores Chemical IDs, structures, chemical names, stock concentrations, quantities and reference information. Compound information can be retrieved using supported CAS-number or SMILES lookup, and stock-solution calculations help determine the solvent volume required for preparation.
 
-**Version 1.2.1, 14 October 2026:** standalone GWL import now requires
-explicit plate size/orientation, and GWL filenames must be unique within a project.
-These two fixes remain included in subsequent releases.
+### Synthesis planning
 
-## Start on Windows
+Manual, Tecan and Opentrons additions can be combined within the same experiment.
 
-1. Install 64-bit Python 3.12 with Tk and the Python launcher, and Microsoft
-   Edge WebView2 Runtime.
-2. Clone or download this repository into a writable folder.
-3. Run **Setup_TypeScript.bat** to install the pinned Python dependencies.
-4. Run **Launch_XinPilot.bat**.
+- **Tecan:** Prepare GWL worklists and accompanying chemical maps. Horizontal and vertical dispensing formats are linked to a common reaction plate map.
+- **Opentrons:** Generate Python protocols from selected labware, pipettes, tip policies and transfer settings.
+- **Manual:** Record additions alongside automated transfers.
+- **External Import:** Import supported transfer tables or structured files, map their fields, and associate source stocks with Chemical IDs.
 
-Setup needs internet access. Node is not required to run the checked-in
-interface. See [setup](docs/setup.md) and [building an executable](packaging/README.md).
-Executables are separate GitHub Release assets, not repository files.
+XinPilot generates worklists and protocols. Instrument control and execution remain in the corresponding instrument software. Generated instructions should be reviewed against the actual instrument and labware configuration before use.
 
-## Connected workflows
+### Expected product structures
 
-- **Compound Notes:** Chemical IDs, structures, stocks, quantities and references.
-- **Synthesis Plan:** Tecan GWLs and chemical maps, Opentrons Python protocols,
-  manual additions, and compatible external transfer tables. Explicitly pushed records combine in Reaction Summary;
-  building-block flags select structural inputs for product generation.
-- **Cheminformatics:** predefined or custom reaction transformations, editable
-  expected products, and separate reviewed LC-MS target representations.
-- **LCMS Analysis:** bundled PyParse and modified product/impurity routes.
-- **Reaction and Product Summaries:** linked conditions, structures, analytical
-  values, traces and notes. Supported numerical data enable peak inspection and
-  reversible manual assignment.
-- **Next Step:** carry reviewed products into new stock records after assessing
-  their available amount, concentration and volume.
-- **External Import:** map CSV/TSV/text, Excel or supported JSON transfer tables
-  to Chemical IDs; optionally import source-stock details from an Excel template.
-  See [formats, mapping and limitations](docs/EXTERNAL_IMPORT_TRIAL.md).
-- **Change tracking:** meaningful unsaved project changes are indicated in the
-  title. See [what is tracked](docs/CHANGE_TRACKING_TRIAL.md).
+XinPilot uses RDKit and reaction SMARTS to generate expected products from selected building blocks. Catalysts, bases and other additives can remain part of the reaction composition without serving as structural inputs.
 
-The Toolkit includes stock-solution and molecular-property/structural-alert
-calculators and an Opentrons simulator. Toolkit utilities retain their native
-interfaces. [FASTSOLV](docs/fastsolv.md) is optional and installed separately.
-UV area fractions and property predictions are not experimental yields.
+Predefined transformations, custom reaction templates and manual product-SMILES correction support different experimental needs. Expected products represent the intended transformations; they are not predictions of reaction success or yield.
 
-## Architecture
+### LC–MS preparation and analytical review
 
-| Location | Responsibility |
-| --- | --- |
-| `desktop/live_ui/src/` | TypeScript controls, dialogs, tables and trace display |
-| `desktop/` | WebView host, process transport and explicit Tk adapters |
-| `xinpilot/application/` | GUI-independent project and robot services |
-| Root Python modules | Established page controllers and scientific integration |
-| `PyParse/`, `Modified PyParse/` | Separate analytical implementations |
-| `Cheminformatic_Super_Advance/` | Reaction transformations and registry |
-| `ketcher_bridge/dist/` | Bundled structure/reaction editor |
-| `toolkit/` | Standalone utilities and simulator source |
-| `tests/`, `scripts/`, `packaging/` | Regression coverage and development tools |
+Reaction wells can be mapped to LC–MS sample positions, with target structures and masses prepared for analysis. Supported charge and counterion adjustments for LC–MS matching are maintained separately from the stored product structures.
 
-This is a local hybrid desktop application, not a hosted website. Hidden Tk
-controllers retain layout and established interactions. See the
-[architecture diagram and code map](docs/ENGINEERING_OVERVIEW.md),
-[testing](docs/testing.md), [validation summary](docs/validation-external-import.md),
-[known limitations](docs/known-issues.md) and [contributing](CONTRIBUTING.md).
+XinPilot includes the bundled PyParse workflow and modified workflows for product and impurity analysis. For supported Waters reports, Product Summary brings together structures, analytical values and traces. Interactive peak inspection provides access to available UV chromatograms, integrated peaks and positive- and negative-ion mass spectra.
 
-## Publication and licensing
+Chemists can manually assign an existing integrated peak as the product while retaining the automatic result for restoration. UV area percentages are analytical area fractions and should not be interpreted as isolated yields or quantitative conversion.
 
-The source folder excludes private projects, experiments, local settings,
-environments and build outputs. It includes synthetic tests and retained
-[third-party licenses and attribution](THIRD_PARTY_NOTICES.md).
+AutoLynx CSV export is available from **Cheminformatics → LCMS Input**. See the [AutoLynx export guide](docs/autolynx-export.md) for configuration and use.
 
-XinPilot's original code is licensed under the [Apache License 2.0](LICENSE).
-Copyright 2026 Xin Qiu. See [NOTICE](NOTICE); third-party components retain
-their respective licenses and attribution requirements.
+### Subsequent synthesis planning
 
-Approved author/citation metadata, repository URL and archival DOI remain to
-be supplied. See [publication steps](docs/publication.md).
+Reviewed products can be carried into a subsequent experiment as new stock records after the user supplies the relevant material and stock information. This supports multistep planning while retaining the preceding synthesis records.
+
+### Supplementary tools
+
+The toolkit provides utilities for stock-solution preparation, molecular-property calculation and structural-alert screening. Optional solubility prediction uses a separately installed FASTSOLV environment.
+
+## Portable projects
+
+Experiments can be exported as `.xinpilot.zip` projects for reopening, review and handover.
+
+A project can contain structured compound and planning records, product structures, analytical associations, supported generated files, trace images and extracted numerical data used for interactive inspection.
+
+These analytical data are reduced representations of the imported reports, not complete instrument raw-data archives. Retain the original reports, analysis platemaps and other processing inputs when full reprocessing is required.
+
+## Getting started
+
+1. Download the Windows executable from [Releases](https://github.com/qxsml/XinPilot/releases), when available.
+2. Open XinPilot and enter or import compound records in **Compound Notes**.
+3. Prepare additions in **Synthesis Plan**, or import supported external transfer records.
+4. Push the planning inputs to **Cheminformatics**, select structural building blocks and generate expected products.
+5. Configure LC–MS well mapping and process supported analytical reports.
+6. Review results in **Reaction Summary** and **Product Summary**.
+7. Export a `.xinpilot.zip` project to preserve and share the experiment.
+
+Detailed documentation is available in the [docs folder](docs).
+
+## Scope and interpretation
+
+XinPilot supports experimental planning, record keeping and analytical review. It does not directly operate laboratory instruments or establish that a planned transfer was executed.
+
+Chemical structures, generated protocols, analytical assignments and calculated properties require scientific review. Available analytical detail depends on the information contained in the imported files.
+
+## For developers
+
+XinPilot combines a TypeScript user interface with a Python backend. RDKit provides molecular parsing, depiction and reaction transformations, while Ketcher provides graphical structure and reaction-template input.
+
+See the [developer documentation](docs) for implementation and build information. Contributions that improve usability, interoperability, supported import formats and workflow reliability are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before contributing.
+
+## Citation and reproducibility
+
+When reporting work performed with XinPilot, identify the software version used and cite the associated publication when available. Retain the project archive and relevant original experimental and analytical inputs alongside the reported results.
+
+## License and acknowledgements
+
+XinPilot is distributed under the [Apache License 2.0](LICENSE).
+
+XinPilot incorporates and depends on third-party software, including RDKit, Ketcher and PyParse. Third-party components retain their respective licenses and attribution requirements. See [NOTICE](NOTICE) and the [third-party materials](third_party).
