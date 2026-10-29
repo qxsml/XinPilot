@@ -1,1 +1,1 @@
-ï»¿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[C@:1][OH].[O,N,S;H1:2]>>[C@@:1][*:2]','output/mitsunobu_products.csv','mitsunobu'))
+from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[C@:1][OH].[O,N,S;H1:2]>>[C@@:1][*:2]','output/mitsunobu_products.csv','mitsunobu'))

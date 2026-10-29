@@ -1,1 +1,1 @@
-ï»¿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1]N=[N+]=[N-].[*:2][C:3]#[CH:4]>>[*:1]n1[cH:4][c:3]([*:2])nn1','output/click_triazole_products.csv','click_triazole'))
+from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1]N=[N+]=[N-].[*:2][C:3]#[CH:4]>>[*:1]n1[cH:4][c:3]([*:2])nn1','output/click_triazole_products.csv','click_triazole'))

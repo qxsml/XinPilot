@@ -1,1 +1,1 @@
-ï»¿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[C;!$(C(=O)[!#6;!#1]):1](=O).[N;H1,H2:2]>>[C:1][N:2]','output/reductive_amination_products.csv','reductive_amination'))
+from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[C;!$(C(=O)[!#6;!#1]):1](=O).[N;H1,H2:2]>>[C:1][N:2]','output/reductive_amination_products.csv','reductive_amination'))

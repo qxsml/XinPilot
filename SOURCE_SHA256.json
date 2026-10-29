@@ -74,8 +74,8 @@
       "bytes": 241
     },
     "Cheminformatic_Super_Advance/click_triazole/click_triazole.py": {
-      "sha256": "40a387ff4e65e89af92a432e7e7e99184b923a393473d028dfe446a3d494e9ad",
-      "bytes": 286
+      "sha256": "4526858e0b9a4abce30c1465fa96df43587c0954add9741eb3aeadfc3ed2525f",
+      "bytes": 280
     },
     "Cheminformatic_Super_Advance/Curtius Rearrangement/Curtius Rearrangement.py": {
       "sha256": "59cee27a5c3c8b8afb3bedfb67f7c8671236e1d4daaac4bfa86675f107c740e7",
@@ -86,8 +86,8 @@
       "bytes": 279
     },
     "Cheminformatic_Super_Advance/heck/heck.py": {
-      "sha256": "988a7aea0d2ad036d53b87a4d52ac30d3d4d1120bdf2899aeb0e3514d5349824",
-      "bytes": 261
+      "sha256": "0a44a340d89b4a964db28940e1b5c00b2e79e61b3eda25514c712a062e05c3d2",
+      "bytes": 255
     },
     "Cheminformatic_Super_Advance/isocyanate to amine/isocyanate_to_amine.py": {
       "sha256": "9983658c7e6d9d0056a620a852654687e00e771ba8f7a3ae5ecdc143b24eb246",
@@ -98,8 +98,8 @@
       "bytes": 8530
     },
     "Cheminformatic_Super_Advance/mitsunobu/mitsunobu.py": {
-      "sha256": "17f423bae809c1e5d232f4702bca4eff70cbb715d7cd7f4bd8ee9119d02e4c19",
-      "bytes": 249
+      "sha256": "81e0467311b1e255e8bbf6d6b0a0f16e487f800d3c1047002bfc98cc9aa1cb79",
+      "bytes": 243
     },
     "Cheminformatic_Super_Advance/reaction_registry.json": {
       "sha256": "8845b3da60aca7a89a261abb59123c009999db76116448abd4d7549120b70a2b",
@@ -110,8 +110,8 @@
       "bytes": 12384
     },
     "Cheminformatic_Super_Advance/reductive_amination/reductive_amination.py": {
-      "sha256": "a7613437b99bbc44c7412092f2cd91f8d359d981ff98781f6c82959a704d926e",
-      "bytes": 284
+      "sha256": "432b2f08ba94c323a0f507706311ddb90a042bb874a29f7d74df58b12d5d5043",
+      "bytes": 278
     },
     "Cheminformatic_Super_Advance/reductive_amination_aldehyde/reductive_amination_aldehyde.py": {
       "sha256": "fd702ac668d72d1a63f66959f85497c3414fdf248b40bab82cbfb4515de0ed60",

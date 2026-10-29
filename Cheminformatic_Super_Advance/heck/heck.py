@@ -1,1 +1,1 @@
-ï»¿from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1][Br,Cl,I].[CH2:2]=[CH:3][*:4]>>[*:1][CH:2]=[CH:3][*:4]','output/heck_products.csv','heck'))
+from pathlib import Path;import sys;sys.path.append(str(Path(__file__).resolve().parents[1]));from reaction_template_engine import run;raise SystemExit(run('[*:1][Br,Cl,I].[CH2:2]=[CH:3][*:4]>>[*:1][CH:2]=[CH:3][*:4]','output/heck_products.csv','heck'))
