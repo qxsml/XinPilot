@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  // desktop/live_ui/src/dom.ts
+  // src/dom.ts
   function anchorPoint(anchor = "center") {
     return {
       x: ["w", "nw", "sw"].includes(anchor) ? 0 : ["e", "ne", "se"].includes(anchor) ? 1 : 0.5,
@@ -35,7 +35,7 @@
     e.title = d.tooltip || "";
   }
 
-  // desktop/live_ui/src/state.ts
+  // src/state.ts
   var runtime = {
     finished: false,
     inFlight: 0,
@@ -69,7 +69,7 @@
   choices.hidden = true;
   document.body.append(choices);
 
-  // desktop/live_ui/src/bridge.ts
+  // src/bridge.ts
   function error(e) {
     if (runtime.finished) return;
     notice.textContent = String(e?.stack || e?.message || e);
@@ -135,7 +135,7 @@
     });
   }
 
-  // desktop/live_ui/src/canvas.ts
+  // src/canvas.ts
   function canvas(node, d) {
     const signature = JSON.stringify([d.items, d.origin, d.width, d.height]);
     if (node.dataset.canvas === signature) return;
@@ -239,7 +239,7 @@
     }
   }
 
-  // desktop/live_ui/src/dialogs.ts
+  // src/dialogs.ts
   function prompts(d) {
     if (!d) {
       document.querySelector("#prompt").replaceChildren();
@@ -407,7 +407,7 @@
     };
   }
 
-  // desktop/live_ui/src/tree.ts
+  // src/tree.ts
   function renderTree(node, d) {
     const hash = JSON.stringify([d.columns, d.rows, d.values, d.rowheight]);
     if (node.dataset.tree !== hash) {
@@ -575,7 +575,7 @@
     }
   }
 
-  // desktop/live_ui/src/widgets.ts
+  // src/widgets.ts
   var frameKinds = /* @__PURE__ */ new Set([
     "Tk",
     "Toplevel",
@@ -986,7 +986,7 @@
     return node;
   }
 
-  // desktop/live_ui/src/render.ts
+  // src/render.ts
   function render(s) {
     Object.assign(assets, s.assets);
     const seen = /* @__PURE__ */ new Set(), seenWindows = /* @__PURE__ */ new Set();
@@ -1123,7 +1123,7 @@
     }
   }
 
-  // desktop/live_ui/src/combobox.ts
+  // src/combobox.ts
   function closeChoices() {
     runtime.choicesEpoch++;
     if (runtime.choicesID)
@@ -1225,7 +1225,7 @@
     arrow.style.height = d.height + "px";
   }
 
-  // desktop/live_ui/src/startup.ts
+  // src/startup.ts
   async function poll() {
     if (!runtime.ready || runtime.polling) return;
     runtime.polling = true;
@@ -1289,7 +1289,7 @@
       closeChoices();
   }, 160);
 
-  // desktop/live_ui/src/diagnostics.ts
+  // src/diagnostics.ts
   Object.defineProperties(globalThis, {
     nodes: { configurable: true, get: () => nodes },
     data: { configurable: true, get: () => data },

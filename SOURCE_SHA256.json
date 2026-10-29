@@ -186,8 +186,8 @@
       "bytes": 136
     },
     "desktop/live_ui/dist/app.js": {
-      "sha256": "e5aa3b925950cbbf74ba40939e9096b3e50bfd2d746255d74cec8b060261e9fc",
-      "bytes": 51725
+      "sha256": "9644847d3ad2fa080fc8d7fa1cf198f58fa14d48ba0c9c25a27140e1c9fb5eda",
+      "bytes": 51549
     },
     "desktop/live_ui/index.html": {
       "sha256": "3e8c425414843b3fecfad2685bfcb12f1ffd9c15e3a8d329692062d4fd1f9ff1",
@@ -578,8 +578,8 @@
       "bytes": 1681
     },
     "scripts/build_renderer.py": {
-      "sha256": "5b438fd98a10e8dde653483f4ef3b1bfa9157f795d115057cc5c17fa52965224",
-      "bytes": 1288
+      "sha256": "df89c85afc566c6fb9c28959ddcf72b6bea8875ef59a480be9205eae676eac78",
+      "bytes": 1387
     },
     "scripts/check_executable.py": {
       "sha256": "460ba757d94f25ff0b98f28d3738d362d76515c347d4d245f39f10ce6bd12d24",

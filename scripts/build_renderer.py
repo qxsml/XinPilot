@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
+RENDERER = ROOT / "desktop" / "live_ui"
 
 
 def main() -> None:
@@ -22,19 +23,20 @@ def main() -> None:
             + ", ".join(missing)
             + ". See docs/setup.md; compiled assets are already included for running the app."
         )
-    subprocess.run([str(node), str(compiler), "-p", "desktop/live_ui"], cwd=ROOT, check=True)
+    # Match npm's working directory so esbuild emits identical source-path comments.
+    subprocess.run([str(node), str(compiler), "-p", "tsconfig.json"], cwd=RENDERER, check=True)
     subprocess.run(
         [
             str(bundler),
-            "desktop/live_ui/app.ts",
+            "app.ts",
             "--bundle",
             "--format=iife",
             "--target=es2021",
             "--charset=utf8",
             "--legal-comments=inline",
-            "--outfile=desktop/live_ui/dist/app.js",
+            "--outfile=dist/app.js",
         ],
-        cwd=ROOT,
+        cwd=RENDERER,
         check=True,
     )
     print("PASS: renderer type checking and offline bundle")
