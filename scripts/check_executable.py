@@ -2,7 +2,7 @@
 import hashlib,json,os,shutil,subprocess,sys,uuid
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-source=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else ROOT/'release/XinPilot-v1.2.3-Windows-x64.exe'
+source=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else ROOT/'release/XinPilot-v1.2.4-Windows-x64.exe'
 work=ROOT/'artifacts'/('pkg-'+uuid.uuid4().hex[:6])
 work.mkdir(parents=True)
 exe=work/'XinPilot.exe';shutil.copy2(source,exe)

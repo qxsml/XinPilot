@@ -1,5 +1,5 @@
 {
-  "version": "1.2.3",
+  "version": "1.2.4",
   "files": {
     ".gitattributes": {
       "sha256": "e091a3d053a872ac44788654a16a321ded25623e3a9376b2e0b972f347e6571c",
@@ -318,8 +318,8 @@
       "bytes": 2774
     },
     "docs/publication.md": {
-      "sha256": "9fb7ce614292393bed7d399298b385ceca5316e46f31ef44626eb761db3dfddd",
-      "bytes": 3032
+      "sha256": "b6ae3fa973336e055f41d459bcbe3bb2f879e8b791d85e187a649f05eca71625",
+      "bytes": 3009
     },
     "docs/release-1.0.1.md": {
       "sha256": "e38196cf4d853ffaaa8dc5846411f307e302a133f639925347c93bf7b4923202",
@@ -353,6 +353,10 @@
       "sha256": "3fb36e96bb70cb4d07ba44a616b354dd53955f20af58a66ef9fa20a1564d4619",
       "bytes": 1007
     },
+    "docs/release-1.2.4.md": {
+      "sha256": "beb95831208649f4b7731d0724050427f1df992f6ceb02e1d7704e6884cb7708",
+      "bytes": 1086
+    },
     "docs/review-fixes-2026-10-02.md": {
       "sha256": "998a9a39f0dbc9237bdd5135f29f52e57ab8fdea432fcf14348b5cf630267fa8",
       "bytes": 3179
@@ -380,6 +384,10 @@
     "docs/validation-1.2.3.md": {
       "sha256": "10575fbfc6dadb9c0a25cbf56252be020de7e97a6113bb47d76bf922685a3401",
       "bytes": 1915
+    },
+    "docs/validation-1.2.4.md": {
+      "sha256": "e1a9c0dda8bfefc2428738692f26b43d3e57c9917b0a7434eec155a95aa1ae90",
+      "bytes": 1536
     },
     "docs/validation-external-import.md": {
       "sha256": "23bde251712eaf2d1bc8bd299de58972acb94cbb059902cb026d4dd3f766094d",
@@ -498,15 +506,15 @@
       "bytes": 379115
     },
     "packaging/README.md": {
-      "sha256": "cbe01ef69e09b76c28b737a8904d23e2118a8eb0870dbc2df50af90e73fe8474",
+      "sha256": "fb3f1e5a7bcf0fda3fdcf521a12878beb76785bc70431c144cbae6436e3b2634",
       "bytes": 1928
     },
     "packaging/TypeScript.spec": {
-      "sha256": "170b70623ac1b7d0c0cb9aa7d880fd8cb34fd7ca867d87a6bada522df27e6bf7",
-      "bytes": 3087
+      "sha256": "2efa42d6ea9647db5f535add683a69418665c87ac868e340fa131f7fc5659cce",
+      "bytes": 3135
     },
     "packaging/version_info.txt": {
-      "sha256": "01048a8f067318f2c45bc0e4cd1ff0dff39f97f345b656e8a1f8dd2502e02569",
+      "sha256": "86a8e9c02dfd78aa8cca0bebc1088c9da8d9b932bc1ecf68bb85c5e0dbd73712",
       "bytes": 535
     },
     "page_presentation.py": {
@@ -582,7 +590,7 @@
       "bytes": 1387
     },
     "scripts/check_executable.py": {
-      "sha256": "460ba757d94f25ff0b98f28d3738d362d76515c347d4d245f39f10ce6bd12d24",
+      "sha256": "cdc7d1d5f3ae3fe6a879be9ee404b7fa9d5f60fd2c63413e717c4425871f74f5",
       "bytes": 2026
     },
     "scripts/run_checks.py": {
@@ -1290,7 +1298,7 @@
       "bytes": 8372
     },
     "VERSION": {
-      "sha256": "75f28e11038fb387b808467e1759a42dc9aa6994697e8b67e9c1b22e8f466e61",
+      "sha256": "1d49cbfbc364eac9020bffeba776ebc50c4c40e3dd586bacec97a786f61ac7e4",
       "bytes": 7
     },
     "well_map.py": {

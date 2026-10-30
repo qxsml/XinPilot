@@ -11,7 +11,7 @@ for directory in ('PyParse','Modified PyParse','toolkit','Cheminformatic_Super_A
             resources.append((str(path),str(path.relative_to(root).parent)))
 resources += [(str(root/'tests/fixtures/peak-inspection-portable.zip'),'tests/fixtures')]
 resources += [(str(root/'xinpilot_logo.ico'),'.')]
-resources += [(str(root/'THIRD_PARTY_NOTICES.md'),'.')]
+resources += [(str(root/name),'.') for name in ('LICENSE','NOTICE','THIRD_PARTY_NOTICES.md','VERSION')]
 resources += collect_data_files('rdkit')+collect_data_files('webview')+collect_data_files('pythonnet')+collect_data_files('clr_loader')
 hidden=['desktop.live_app','desktop.live_engine','desktop.packaged_check','integrated_full_software','webview.platforms.winforms','webview.platforms.edgechromium','clr','pythonnet','clr_loader']
 resources += collect_data_files('opentrons') + collect_data_files('opentrons_shared_data')
@@ -36,4 +36,4 @@ while queue:
         for item in getattr(pe,'DIRECTORY_ENTRY_IMPORT',[]):
             queue.append(item.dll.decode())
 pyz=PYZ(a.pure)
-exe=EXE(pyz,a.scripts,a.binaries,a.datas,[],name='XinPilot-v1.2.3-Windows-x64',version=str(root/'packaging/version_info.txt'),console=False,icon=str(root/'xinpilot_logo.ico'),upx=False)
+exe=EXE(pyz,a.scripts,a.binaries,a.datas,[],name='XinPilot-v1.2.4-Windows-x64',version=str(root/'packaging/version_info.txt'),console=False,icon=str(root/'xinpilot_logo.ico'),upx=False)

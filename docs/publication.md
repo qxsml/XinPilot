@@ -19,9 +19,9 @@ XinPilot's original code is licensed under Apache-2.0, copyright 2026 Xin Qiu.
 The root LICENSE and NOTICE record this decision. Retain all third-party terms.
 
 1. **License materials with binary distribution.** Include LICENSE, NOTICE and
-   applicable third-party notices with the executable distribution. The existing
-   v1.2.3 EXE predates the root license decision and was not rebuilt for this
-   documentation update; supply these notices alongside it.
+   applicable third-party notices with the executable distribution. The v1.2.4
+   executable embeds these materials; the release also supplies a
+   separate notices archive for convenient access.
 2. **Approved authors and citation details.** Add CITATION.cff with the real
    author list, release date/version and repository URL; add the archive DOI
    when assigned. No author list or DOI is guessed in this snapshot.
@@ -34,9 +34,9 @@ The root LICENSE and NOTICE record this decision. Retain all third-party terms.
 5. **Experimental examples/SI, if desired.** Supply only the datasets authorized
    for publication. Private validation inputs were deliberately not included.
 
-This release is version 1.2.3, combining horizontal and vertical Tecan additions
+This release is version 1.2.4, combining horizontal and vertical Tecan additions
 on one reaction plate, AutoLynx CSV export and the documented chemistry/robot fixes.
-Use the matching v1.2.3 tag and executable for publication. Keep VERSION,
+Use the matching v1.2.4 tag and executable for publication. Keep VERSION,
 release documentation and Windows version metadata consistent in future releases.
 
 `SOURCE_SHA256.json` identifies distributed source files (excluding itself and

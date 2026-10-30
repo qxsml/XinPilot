@@ -14,14 +14,14 @@ bundle. `Build_Executable.bat` packages the bundle that is present, so it must
 be kept in sync with renderer changes.
 
 Run `Build_Executable.bat`. `TypeScript.spec` uses `desktop/frozen_entry.py` and
-writes `release/XinPilot-v1.2.3-Windows-x64.exe`. It includes both PyParse routes,
+writes `release/XinPilot-v1.2.4-Windows-x64.exe`. It includes both PyParse routes,
 toolkit/simulator resources, runtime dependencies and third-party notices. It
 does not include private stock/settings files or FASTSOLV/model weights.
 
 After building, run the packaged native diagnostic:
 
 ```bat
-release\XinPilot-v1.2.3-Windows-x64.exe --desktop-check artifacts\packaged-check.json
+release\XinPilot-v1.2.4-Windows-x64.exe --desktop-check artifacts\packaged-check.json
 ```
 
 This opens a real WebView2 window with a synthetic project and checks traces,
