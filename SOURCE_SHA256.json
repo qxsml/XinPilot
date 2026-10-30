@@ -354,8 +354,8 @@
       "bytes": 1007
     },
     "docs/release-1.2.4.md": {
-      "sha256": "beb95831208649f4b7731d0724050427f1df992f6ceb02e1d7704e6884cb7708",
-      "bytes": 1086
+      "sha256": "c5c346f52ea165241c098d3f8fa70bac9e820f03ee1b598689b3f0020caeede2",
+      "bytes": 1330
     },
     "docs/review-fixes-2026-10-02.md": {
       "sha256": "998a9a39f0dbc9237bdd5135f29f52e57ab8fdea432fcf14348b5cf630267fa8",
@@ -386,8 +386,8 @@
       "bytes": 1915
     },
     "docs/validation-1.2.4.md": {
-      "sha256": "e1a9c0dda8bfefc2428738692f26b43d3e57c9917b0a7434eec155a95aa1ae90",
-      "bytes": 1536
+      "sha256": "6643e572aad39aa0b7486ea9b8aefc8753fe8edf79ef3ecf937bf3f7f84f9515",
+      "bytes": 1711
     },
     "docs/validation-external-import.md": {
       "sha256": "23bde251712eaf2d1bc8bd299de58972acb94cbb059902cb026d4dd3f766094d",
@@ -470,24 +470,24 @@
       "bytes": 0
     },
     "Modified PyParse/getShimadzuData.py": {
-      "sha256": "f17d95cda3c3db8973824c84177bb5e68ec83da0cbaf43b639a53b3ed4418406",
-      "bytes": 9389
+      "sha256": "a5870df6a022c0cfae7ef5d5dc9222a1dfe2d26ecbf0a5adfa88bc4e2dfc3656",
+      "bytes": 9455
     },
     "Modified PyParse/getWatersData.py": {
-      "sha256": "152f15881fa4c10198a6bd449ebc716b7b5eeec442c0df24f28229e877b9d526",
-      "bytes": 23589
+      "sha256": "64f1a3907b87f4a7d344108ed866c42b455d0cda6948ac0c8873aa363f32bd75",
+      "bytes": 23655
     },
     "Modified PyParse/MODIFICATIONS.md": {
-      "sha256": "00f00ce1a3f6a615d57da5e68f3842eacba2c64ee69f390cccedf57998fec6fc",
-      "bytes": 2639
+      "sha256": "605a47c3ee55586902fdb7426118f11688ec252cd90c0158a8ca1695f61a4cbd",
+      "bytes": 2982
     },
     "Modified PyParse/PyParse.py": {
-      "sha256": "61f9a74972c7ebbfb2f889a7a75dac31731a558ceb561c5adf90af51ef9e86e5",
-      "bytes": 208491
+      "sha256": "b8ec5e680e636b9638bed144903eeff34550d175d3c90fc98b78cdac17700e6e",
+      "bytes": 208557
     },
     "Modified PyParse/templates/html_template.html": {
-      "sha256": "f40dd60da997a1dddc4bc76fa3e812c66aae16a8f86bbec9506bbf0cbb6d77b3",
-      "bytes": 20854
+      "sha256": "8c129d9ab805135ae800e61cf8e184cfa492d3abc0aff2be24ea98e13d84b012",
+      "bytes": 20930
     },
     "Modified PyParse/XINPILOT_OUTPUTS.md": {
       "sha256": "121b859eae13484c45836f38c925f1ff5ec26d4a6db0a655a8956bd65b01e506",
@@ -541,13 +541,17 @@
       "sha256": "872ab655a138d5b57679e6d2a7a6344d1525ae7c39b49433e4d9822a33251ce8",
       "bytes": 20952
     },
+    "PyParse/MODIFICATIONS.md": {
+      "sha256": "fbf55e50a7788285933a55025867e28cab78a33196227e596e7152965819cc94",
+      "bytes": 748
+    },
     "PyParse/PROVENANCE.md": {
       "sha256": "d48208744ad773d04ac872b562eac1ea413374e5374a2c06847cf8da177c87a5",
       "bytes": 923
     },
     "PyParse/PyParse.py": {
-      "sha256": "bcc3c1608cc902dc487605579cf8be0bfa1b428fb135f5c168f0bce1ab142012",
-      "bytes": 141435
+      "sha256": "f8ae5ffd5e55e1a7dd2ea28c60aee6a6e1aed9ff07e6282f63b91d1161924fce",
+      "bytes": 141501
     },
     "PyParse/templates/html_template.html": {
       "sha256": "308827a7dad5efeff2d99db275608269efa0c2289928589a9087a95419a9a123",
@@ -846,7 +850,7 @@
       "bytes": 11154
     },
     "tests/test_original_pyparse_integrity.py": {
-      "sha256": "901ffad5fb860751562d3ac4dbcc534a76e3f71ca3c738ea567cebd5aabea061",
+      "sha256": "838cdd7499c89706929892eb3ba03d216ccfcce64e4ede930c9c3ae397e364b0",
       "bytes": 574
     },
     "tests/test_portable_gwl_project.py": {

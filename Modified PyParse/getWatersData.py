@@ -9,6 +9,7 @@ it into a common structure. It finds the appropriate sections of text by
 looking for keywords that describe the start of a particular section. 
 
 """
+# Modified by Xin Qiu for XinPilot (2026); see MODIFICATIONS.md.
 
 import math
 import re

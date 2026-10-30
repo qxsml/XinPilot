@@ -8,6 +8,7 @@ The following script extracts the data relevant to PyParse, and reformats
 it into a common structure. 
 
 """
+# Modified by Xin Qiu for XinPilot (2026); see MODIFICATIONS.md.
 
 import xml.etree.ElementTree as ET
 import base64

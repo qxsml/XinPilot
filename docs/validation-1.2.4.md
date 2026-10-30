@@ -9,8 +9,8 @@ Validated locally on Windows on 30 October 2026.
 - Standard and modified PyParse startup passed using an isolated runtime PATH.
 - Packaged WebView2 scientific inspection diagnostic passed using synthetic project data.
 - Packaged AutoLynx export popup opened and closed with the expected controls.
-- The source inventory verified successfully. Both PyParse source trees are unchanged.
+- The source inventory verified successfully. Five PyParse files received attribution-only comments; Python AST equivalence was verified and upstream headers retained. The integrity checksum was refreshed for the authorized comment.
 
-Application logic is unchanged from the source that passed GitHub Python and renderer workflows at commit 1e11d55. This build updates version metadata and embedded licensing materials. Existing v1.2.3 functional acceptance evidence is documented separately; those full chemistry and robot GUI campaigns were not rerun for this maintenance build.
+Application logic is unchanged from the v1.2.4 source at commit 883771f. This rebuild includes explicit PyParse modification notices and their documentation. Attribution comments do not change analytical behavior. Existing v1.2.3 functional acceptance evidence is documented separately; those full chemistry and robot GUI campaigns were not rerun for this maintenance build.
 
 The executable is unsigned. No independent clean-PC or physical robot test was performed. Private build logs, test projects and caches are outside the upload source folder.

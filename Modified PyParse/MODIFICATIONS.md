@@ -42,3 +42,7 @@ not changed. The separate original PyParse runtime was not edited in this update
 ## Interactive inspection
 
 The current integration writes numerical UV/MS peak bundles, distinguishes UV integration from MS-only records, and retains starting-material mass-conflict metadata. Reversible manual overrides are managed in XinPilot without overwriting automatic analysis outputs. See XINPILOT_OUTPUTS.md and ../docs/peak-inspection.md.
+
+## 30 October 2026 attribution update
+
+Explicit Xin Qiu/XinPilot modification notices were added to all four files listed above. Existing upstream headers were retained. These notice additions do not change Python statements or analytical behavior. The separate bundled PyParse integration is documented in `../PyParse/MODIFICATIONS.md`.

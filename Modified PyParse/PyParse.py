@@ -16,6 +16,7 @@ limitations under the License.
 
 Authors: Joe Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
 """
+# Modified by Xin Qiu for XinPilot (2026); see MODIFICATIONS.md.
 
 
 import os
