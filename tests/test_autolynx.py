@@ -47,6 +47,26 @@ class AutoLynxTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 load_methods(path)
 
+    def test_decimal_precision_and_instrument_limit(self):
+        for value, expected in [('1e-7', '0.0000001'), ('1.23456789', '1.23456789'), ('2.50', '2.50')]:
+            text = sample_csv(self.samples, dict(self.settings, INJ_VOL=value))
+            self.assertEqual(expected, list(csv.DictReader(io.StringIO(text)))[0]['INJ_VOL'])
+        with self.assertRaisesRegex(ValueError, 'instrument maximum'):
+            sample_csv(self.samples, dict(self.settings, INJ_VOL='2.1', max_injection_ul='2'))
+        sample_csv(self.samples, dict(self.settings, INJ_VOL='2', max_injection_ul='2'))
+        for limit in ('0', '-1', 'nan', 'Infinity', 'invalid'):
+            with self.subTest(limit=limit), self.assertRaises(ValueError):
+                sample_csv(self.samples, dict(self.settings, max_injection_ul=limit))
+        for value in ('1e99999', '1e-99999', 'sNaN'):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                sample_csv(self.samples, dict(self.settings, INJ_VOL=value))
+
+    def test_windows_reserved_and_long_names(self):
+        for name in ('CON', 'nul.raw', 'COM1', 'LPT9', 'COM\u00b9', 'A' * 201):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                sample_csv([dict(reaction_name=name, pyparse_well='A1')], self.settings)
+        sample_csv([dict(reaction_name='COMPOUND_1', pyparse_well='A1')], self.settings)
+
 
 if __name__ == '__main__':
     unittest.main()

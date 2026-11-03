@@ -54,6 +54,10 @@ def validate_used_pipette_tipracks(
             continue
         cfg = pipettes[mount]
         pipette = str(cfg["name"])
+        if pipette.startswith("flex_96channel"):
+            raise ValueError("96-channel pipettes are not yet supported by XinPilot protocol generation.")
+        if pipette not in PIPETTE_TIPRACK_CAPACITIES:
+            raise ValueError(f"Unsupported pipette: {pipette}")
         tiprack = str(cfg["tiprack"]).strip()
         if not tiprack:
             raise ValueError(

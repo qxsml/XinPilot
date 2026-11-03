@@ -1,5 +1,7 @@
 """Regression checks for job ownership and product-specific result invalidation."""
 import copy
+import queue
+import sys
 from dataclasses import replace
 import tempfile
 import unittest
@@ -39,6 +41,49 @@ class AnalysisJobTests(unittest.TestCase):
         self.frame.current_analysis_kind = 'impurity'
         self.frame._complete_job(self.job, 0, 1)
         self.frame.result_callback.assert_called_once_with(self.job.output_dir, 'product')
+
+    def test_zero_exit_with_failure_report_does_not_attach_results(self):
+        self.frame.title = 'PyParse'
+        self.job.output_dir.mkdir()
+        (self.job.output_dir / 'html_output.html').write_text('Unspecified error occurred')
+        self.frame.log_q = queue.Queue()
+        process = SimpleNamespace(stdout=iter(['analysis output\n']), wait=lambda: 0)
+        with patch('pyparse_runner_frame.subprocess.Popen', return_value=process):
+            self.frame._worker(['mock-engine'], self.job)
+        messages = list(self.frame.log_q.queue)
+        completion = next(item for item in messages if item[0] == '__DONE__')
+        self.assertEqual(1, completion[2])
+        self.assertTrue(any('analysis failure' in str(item) for item in messages))
+        self.assertTrue(any('Analysis failed' in str(item) for item in messages))
+        with patch('pyparse_runner_frame.messagebox.showerror') as error:
+            self.frame._complete_job(*completion[1:])
+        self.frame.result_callback.assert_not_called()
+        self.assertIn('Failed', self.frame.status_label.config.call_args.kwargs['text'])
+        error.assert_called_once()
+
+    def test_zero_exit_with_fatal_console_output_is_failed(self):
+        self.frame.log_q = queue.Queue()
+        process = SimpleNamespace(stdout=iter(['ERROR:root:A fatal exception occurred. Contact administrator.\n']), wait=lambda: 0)
+        with patch('pyparse_runner_frame.subprocess.Popen', return_value=process):
+            self.frame._worker(['mock-engine'], self.job)
+        completion = next(item for item in self.frame.log_q.queue if item[0] == '__DONE__')
+        self.assertEqual(1, completion[2])
+
+    def test_real_unmodified_pyparse_failure_is_reported_by_runner(self):
+        self.frame.log_q = queue.Queue()
+        engine = Path(__file__).resolve().parents[1] / 'PyParse/PyParse.py'
+        report = self.root / 'invalid.rpt'
+        report.write_text('Synthetic invalid Waters report')
+        self.frame._worker([sys.executable, '-B', str(engine), str(report),
+                            str(self.map), '-o', str(self.job.output_dir)], self.job)
+        messages = list(self.frame.log_q.queue)
+        completion = next(item for item in messages if item[0] == '__DONE__')
+        self.assertNotEqual(0, completion[2])
+        self.frame.title = 'PyParse'
+        with patch('pyparse_runner_frame.messagebox.showerror'):
+            self.frame._complete_job(*completion[1:])
+        self.frame.result_callback.assert_not_called()
+        self.assertIn('Failed', self.frame.status_label.config.call_args.kwargs['text'])
 
     def test_import_or_next_step_invalidates_running_job(self):
         self.frame.invalidate_pending_results()

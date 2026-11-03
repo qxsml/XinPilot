@@ -5,6 +5,8 @@ is rewritten. Areas are taken from the instrument, never integrated on screen.
 """
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import copy
 import json
 import math
@@ -363,7 +365,7 @@ class PeakInspectionMixin:
                 return
             if save_job[0] is not None:
                 win.after_cancel(save_job[0])
-            save_job[0] = win.after(500, save_layout)
+            save_job[0] = after_owned(win, 500, save_layout)
         def apply_layout():
             if not win.winfo_exists():
                 return
@@ -397,7 +399,7 @@ class PeakInspectionMixin:
             pane.bind('<<PaneResized>>', capture_layout, add='+')
         def resized_window(event):
             if event.widget is win:
-                win.after_idle(apply_layout)
+                after_idle_owned(win, apply_layout)
                 schedule_save()
         win.bind('<Configure>', resized_window, add='+')
         def closing(event):
@@ -405,7 +407,7 @@ class PeakInspectionMixin:
                 win.after_cancel(save_job[0])
                 save_job[0] = None
         win.bind('<Destroy>', closing, add='+')
-        win.after(120, apply_layout)
+        after_owned(win, 120, apply_layout)
         selection = [0]
         peaks = well['peaks']
 

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import math
 
 from xinpilot_shared import *
@@ -75,7 +77,7 @@ class ManualWorkflowFrame(ttk.Frame):
         self.chemical_var.trace_add("write", self._on_structure_source_changed)
         self.show_structure_var.trace_add("write", self._on_show_structure_toggle)
         self._rebuild_well_map()
-        self._manual_split_job = self.after(120, self._set_initial_manual_split)
+        self._manual_split_job = after_owned(self, 120, self._set_initial_manual_split)
 
     def _set_initial_manual_split(self):
         """Keep the complete 96-well map reachable at the initial window size."""
@@ -83,7 +85,7 @@ class ManualWorkflowFrame(ttk.Frame):
         try:
             available = self.manual_panes.winfo_height()
             if available <= 1:
-                self._manual_split_job = self.after(120, self._set_initial_manual_split)
+                self._manual_split_job = after_owned(self, 120, self._set_initial_manual_split)
                 return
             map_height = max(260, min(390, available - 170))
             self.manual_panes.sashpos(0, map_height)
@@ -259,7 +261,7 @@ class ManualWorkflowFrame(ttk.Frame):
 
     def _on_structure_source_changed(self, *_args):
         if self.show_structure_var.get():
-            self.after_idle(self._refresh_structure_window)
+            after_idle_owned(self, self._refresh_structure_window)
 
     def _close_structure_window(self):
         win = self.structure_window

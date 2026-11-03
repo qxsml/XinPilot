@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite the version of XinPilot used in your work."
+title: XinPilot
+type: software
+version: 1.2.5
+authors:
+  - family-names: Qiu
+    given-names: Xin
+license: Apache-2.0
+repository-code: "https://github.com/qxsml/XinPilot"
+url: "https://github.com/qxsml/XinPilot"

@@ -34,6 +34,20 @@ def input_signature(value):
         return (str(path), "missing")
 
 
+def analysis_failure(output_dir: Path) -> str:
+    """Detect legacy engine failure reports even when its process exits zero."""
+    for name, markers in (
+        ("html_output.html", ("unspecified error",)),
+        ("logfile.txt", ("a fatal exception occurred",)),
+    ):
+        path = Path(output_dir) / name
+        if path.is_file():
+            text = path.read_text(encoding="utf-8", errors="replace").lower()
+            if any(marker in text for marker in markers):
+                return f"PyParse reported an analysis failure in {path}. Review the analysis log."
+    return ""
+
+
 def platemap_kind(path: Path) -> str:
     """Classify a Modified PyParse platemap without relying on its filename."""
     try:

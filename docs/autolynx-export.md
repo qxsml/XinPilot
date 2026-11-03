@@ -1,8 +1,8 @@
 # AutoLynx sample-list export
 
-Version 1.2.2 extends Unified Plate GitHub v1.2.1. Launch
+AutoLynx export was introduced in v1.2.2 and is included in v1.2.5. Launch
 `Launch_XinPilot.bat`, then open **Cheminformatics > LCMS Input > Export AutoLynx
-sample list**. The matching v1.2.2 executable also includes this feature.
+sample list**. The matching executable includes this feature.
 
 Assign LCMS wells and reaction names before exporting. All LCMS Input samples
 are exported. Reaction names become FILE_NAME; only LCMS wells become
@@ -14,6 +14,13 @@ Enter acquisition/inlet methods and optional processing settings. Loading an
 example CSV copies only uniform MS_FILE, MS_TUNE_FILE, INLET_FILE, PROCESS and
 PROCESS_PARAMS values. It never copies names, positions or injection volume.
 Injection volume starts blank whenever the dialog opens and must be entered.
+Volumes are written as plain decimals without six-digit rounding. Set the optional
+instrument maximum injection volume to match your configured Waters system;
+XinPilot does not infer the instrument's physical limits. The broad CSV numeric
+range (0.000000001 to 1000000 uL) is a serialization guard, not an operating range.
+Windows reserved filenames are rejected and sample names are limited to 200
+UTF-16 code units. Short names also help avoid Windows full-path limits.
+The default processing program is OpenLynx; a loaded template retains its spelling.
 Export CSV opens a save dialog for the user-selected CSV filename.
 
 The output retains the 21-column schema of the supplied accepted examples,
@@ -36,4 +43,4 @@ Actual acquisition/import on a Waters instrument remains a user check.
 Regression run: 530 tests, 528 passed initially; two native-dialog tests lacked
 the local WebView dependency path. With the configured path, all six tests in
 that module passed. Save-file writing and fresh-volume reopening also passed.
-Both PyParse trees are unchanged from v1.2.1. See release/BUILD_INFO.json for release validation.
+Those statements describe the original v1.2.2 validation. See the current release validation document for subsequent changes.

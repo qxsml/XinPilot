@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, simpledialog
 from pathlib import Path
@@ -33,7 +35,7 @@ from xinpilot.application.tecan_domain import (
     TransferBlock,
     validate_gwl_names,
 )
-from xinpilot.application.tecan_worklist import build_gwl_lines, build_chemical_map, build_volume_map
+from xinpilot.application.tecan_worklist import build_gwl_lines, build_chemical_map, build_volume_map, gwl_command_signature
 from typing import List, Tuple, Dict, Optional, Set
 import csv
 import math
@@ -285,7 +287,7 @@ class SourceWellDialog(tk.Toplevel):
         if not cfg:
             messagebox.showerror("Unsupported labware", f"No source map defined for {labware}", parent=self)
             self.result_label = ""
-            self.after(50, self.destroy)
+            after_owned(self, 50, self.destroy)
             return
 
         rows, cols, style = cfg["rows"], cfg["cols"], cfg["style"]
@@ -1248,7 +1250,7 @@ class TecanFrame(ttk.Frame):
         if self._updating_form:
             return
         if self.v_show_structure.get():
-            self.after_idle(self._refresh_structure_window)
+            after_idle_owned(self, self._refresh_structure_window)
 
     def _close_structure_window(self):
         win = self.structure_window
@@ -1392,6 +1394,41 @@ class TecanFrame(ttk.Frame):
                 + ("\n..." if len(warnings) > 12 else ""),
             )
 
+    def _prepare_gwls_for_push(self):
+        """Keep the summary tied to saved commands; never overwrite external edits."""
+        try:
+            for entry in self.exported_gwl_files:
+                raw = str(entry.get("path") or "").strip()
+                saved = str(entry.get("content") or "")
+                # Portable projects contain their own saved worklist snapshot.
+                if raw and not entry.get("requires_save_as"):
+                    path = Path(raw)
+                    if not path.is_file():
+                        if not saved.strip() and not entry.get("blocks"):
+                            # New GWL: location chosen, but no file saved yet.
+                            continue
+                        raise ValueError(f"{path.name}: saved GWL is missing. Select it and Save As, or re-import the file.")
+                    disk = self._read_text_file(path)
+                    if saved and gwl_command_signature(disk) != gwl_command_signature(saved):
+                        raise ValueError(f"{path.name}: the GWL changed outside XinPilot. Re-import it before pushing; the existing summary has not changed.")
+            if self._current_gwl_has_unsaved_changes():
+                if not messagebox.askyesno("Save GWL before pushing?", "The current GWL has unsaved edits. Save them before pushing? Choosing No cancels the push.", parent=self):
+                    return False
+                if not self._save_gwl_entry_edits(self._active_gwl_index, show_success=False):
+                    return False
+            for index, entry in enumerate(self.exported_gwl_files):
+                mode, blocks, _ = self._blocks_for_exported_gwl_entry(index, entry)
+                saved = str(entry.get("content") or "")
+                if not saved and entry.get("path") and Path(entry["path"]).is_file():
+                    saved = self._read_text_file(Path(entry["path"]))
+                expected = "\n".join(build_gwl_lines(blocks, mode, labware_aliases=self.labware_aliases))
+                if gwl_command_signature(saved) != gwl_command_signature(expected):
+                    raise ValueError(f"{entry.get('name', 'GWL')}: saved commands and transfer blocks disagree. Select this GWL and save the intended plan, or re-import the saved file before pushing.")
+            return True
+        except Exception as exc:
+            messagebox.showerror("GWL consistency", str(exc), parent=self)
+            return False
+
     def _push_all_gwls_to_cheminformatics(self):
         try:
             validate_gwl_names(self.exported_gwl_files)
@@ -1407,6 +1444,8 @@ class TecanFrame(ttk.Frame):
         if self.listbox.curselection() and not self._apply_current(silent=False, show_success=False):
             return
 
+        if not self._prepare_gwls_for_push():
+            return
         rows: List[Dict[str, object]] = []
         errors: List[str] = []
         for idx, entry in enumerate(self.exported_gwl_files):
@@ -1425,6 +1464,9 @@ class TecanFrame(ttk.Frame):
                 label = entry.get("name", "") or Path(entry.get("path", "")).name or f"GWL {idx + 1}"
                 errors.append(f"{label}: {exc}")
 
+        if errors:
+            messagebox.showerror("GWL push cancelled", "No summary records were changed.\n\n" + "\n".join(errors[:8]), parent=self)
+            return
         if not rows:
             detail = "\n\n" + "\n".join(errors[:6]) if errors else ""
             messagebox.showwarning(
@@ -1440,14 +1482,6 @@ class TecanFrame(ttk.Frame):
                 self.push_callback()
         else:
             messagebox.showinfo("Pushed", f"Pushed {len(rows)} chemical well row(s) from listed GWL files.")
-
-        if errors:
-            messagebox.showwarning(
-                "Some GWLs skipped",
-                "Some GWL files could not be read for Cheminformatics push:\n\n"
-                + "\n".join(errors[:8])
-                + ("\n..." if len(errors) > 8 else ""),
-            )
 
     @staticmethod
     def _chemical_names_from_text(text: object) -> List[str]:
@@ -1812,8 +1846,8 @@ class TecanFrame(ttk.Frame):
         self.group_rows.append({"frame": row, "vol": rv, "wells": rw})
         if volume or wells:
             self._on_group_change()
-        self.groups_rows_frame.after_idle(self._sync_group_scroll_region)
-        self.groups_canvas.after_idle(lambda: self.groups_canvas.yview_moveto(1.0))
+        after_idle_owned(self.groups_rows_frame, self._sync_group_scroll_region)
+        after_idle_owned(self.groups_canvas, lambda: self.groups_canvas.yview_moveto(1.0))
 
     def _remove_group_row(self, frame):
         for i, g in enumerate(self.group_rows):
@@ -1823,7 +1857,7 @@ class TecanFrame(ttk.Frame):
                 break
         for i, g in enumerate(self.group_rows):
             g["frame"].grid_configure(row=i)
-        self.groups_rows_frame.after_idle(self._sync_group_scroll_region)
+        after_idle_owned(self.groups_rows_frame, self._sync_group_scroll_region)
         self._on_group_change()
 
     def _pick_group_wells_on_map(self, target_var: tk.StringVar, anchor: Optional[tk.Widget] = None):

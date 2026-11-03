@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence
 import math
+from decimal import Decimal
+
 
 from .tecan_domain import (
     TransferBlock,
@@ -18,6 +20,22 @@ from .tecan_domain import (
     parse_dest_well_expr,
     rounded_gwl_volume,
 )
+
+
+def gwl_command_signature(content: str) -> tuple:
+    """Compare ordered instrument commands, allowing numeric spelling differences."""
+    commands = []
+    for line in str(content).splitlines():
+        fields = [field.strip() for field in line.strip().split(";")]
+        if not fields[0] or fields[0] == "C":
+            continue
+        if fields[0] in {"A", "D"} and len(fields) >= 8:
+            fields[4] = str(int(fields[4]))
+            fields[6] = str(Decimal(fields[6]).normalize())
+        while fields and fields[-1] == "":
+            fields.pop()
+        commands.append(tuple(fields))
+    return tuple(commands)
 
 
 def build_gwl_lines(

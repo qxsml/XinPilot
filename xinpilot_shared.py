@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import csv
 import ast
 import http.server
@@ -582,7 +584,7 @@ def install_notebook_tab_feedback(root):
             if "disabled" in widget.state():
                 return
             widget.state(["pressed"])
-            widget.after(170, lambda w=widget: w.winfo_exists() and w.state(["!pressed"]))
+            after_owned(widget, 170, lambda w=widget: w.winfo_exists() and w.state(["!pressed"]))
         except Exception:
             pass
 

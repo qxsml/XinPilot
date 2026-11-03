@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import itertools
 from typing import Iterable
 
@@ -145,7 +147,7 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
         self._ketcher_port: Optional[int] = None
         self._ketcher_template_queue: "queue.Queue[str]" = queue.Queue()
         self._build_ui()
-        self.after(250, self._poll_ketcher_templates)
+        after_owned(self, 250, self._poll_ketcher_templates)
 
     def _build_ui(self):
         self.tab_icons = make_tab_icons(self)
@@ -539,7 +541,7 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
         style_region_widgets(impurity_table_box, "RowRegion")
         self._initial_product_split_ready = False
         self.product_structure_split.bind("<Configure>", lambda _event: self._set_initial_product_summary_split(), add="+")
-        self.after_idle(self._set_initial_product_summary_split)
+        after_idle_owned(self, self._set_initial_product_summary_split)
 
         custom_top = ttk.LabelFrame(custom_tab, text="Mapped reaction template", padding=8, style="ChemRegion.TLabelframe")
         custom_top.pack(fill="x", padx=8, pady=8)
@@ -4384,7 +4386,7 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
                 self._load_ketcher_template(self._ketcher_template_queue.get_nowait())
         except queue.Empty:
             pass
-        self.after(250, self._poll_ketcher_templates)
+        after_owned(self, 250, self._poll_ketcher_templates)
 
     def _ensure_ketcher_server(self) -> int:
         bridge_dir = resource_path("ketcher_bridge/dist")

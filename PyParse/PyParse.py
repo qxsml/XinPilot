@@ -16,7 +16,6 @@ limitations under the License.
 
 Authors: Joe Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
 """
-# Modified by Xin Qiu for XinPilot (2026); see MODIFICATIONS.md.
 
 
 import os
@@ -38,7 +37,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
-from jinja2 import Environment, PackageLoader, FileSystemLoader
+from jinja2 import Environment, PackageLoader
 import numpy as np
 import matplotlib.cm as cm
 import glob
@@ -76,7 +75,7 @@ def importStructures(filename, save_dir):
     #read csv file into dataframe
     #replace empty cells with an empty string
     #convert all column names to lower case and remove whitespace
-    inputCSV = pd.read_csv(filename, dtype=str, keep_default_na=False)
+    inputCSV = pd.read_csv(filename)
     inputCSV.fillna("", inplace=True)
     inputCSV.columns = inputCSV.columns.str.strip().str.lower()
 
@@ -2255,14 +2254,9 @@ def buildHTML(save_dir, compoundDF, all_compounds, impurities, analysis_name, ti
 
 
     
-    try:
-        env = Environment(loader=PackageLoader("PyParse", "templates"))
-    except Exception:
-        if getattr(sys, "frozen", False):
-            tpl_dir = os.path.join(getattr(sys, "_MEIPASS", os.path.dirname(sys.executable)), "PyParse", "templates")
-        else:
-            tpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
-        env = Environment(loader=FileSystemLoader(tpl_dir))
+    env = Environment(
+        loader = PackageLoader("PyParse", "templates")
+    )
 
     template = env.get_template("html_template.html")
 

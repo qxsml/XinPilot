@@ -1,7 +1,7 @@
 """MassLynx sample-list CSV export, independent of GUI and chemistry engines."""
 import csv
 import io
-import math
+from decimal import Decimal, InvalidOperation
 import re
 from pathlib import Path
 
@@ -35,11 +35,24 @@ def sample_csv(samples, settings):
     if not re.fullmatch(r'[1-9][0-9]*', plate):
         raise ValueError('Enter a positive Waters plate position, for example 1 or 2.')
     try:
-        volume = float(settings.get('INJ_VOL', ''))
-    except (TypeError, ValueError):
-        volume = 0
-    if not math.isfinite(volume) or volume <= 0:
+        volume = Decimal(str(settings.get('INJ_VOL', '')).strip())
+    except (InvalidOperation, TypeError, ValueError):
+        volume = Decimal(0)
+    if not volume.is_finite() or volume <= 0:
         raise ValueError('Enter a positive injection volume in uL for this export.')
+    # Protect decimal expansion while leaving physical limits to the instrument setting.
+    if volume < Decimal('0.000000001') or volume > Decimal('1000000'):
+        raise ValueError('Injection volume is outside the supported CSV range (0.000000001 to 1000000 uL).')
+    maximum = str(settings.get('max_injection_ul', '')).strip()
+    if maximum:
+        try:
+            maximum_value = Decimal(maximum)
+        except InvalidOperation:
+            raise ValueError('Enter a positive instrument maximum injection volume.') from None
+        if not maximum_value.is_finite() or maximum_value <= 0:
+            raise ValueError('Enter a positive instrument maximum injection volume.')
+        if volume > maximum_value:
+            raise ValueError('Injection volume exceeds the configured instrument maximum.')
     for field in ('MS_FILE', 'INLET_FILE'):
         if not str(settings.get(field, '')).strip():
             raise ValueError(f'Enter {field}.')
@@ -54,6 +67,11 @@ def sample_csv(samples, settings):
         name = str(sample.get('reaction_name') or '').strip()
         if not name or re.search(r'[<>:"/\\|?*\x00-\x1f]', name) or name.endswith('.'):
             raise ValueError('Each reaction needs a valid sample filename (no path characters).')
+        base = name.split('.', 1)[0].rstrip(' ').upper()
+        if base in {'CON', 'PRN', 'AUX', 'NUL'} or re.fullmatch(r'(COM|LPT)[1-9\u00b9\u00b2\u00b3]', base):
+            raise ValueError(f'{name}: Windows reserved names cannot be used as sample filenames.')
+        if len(name.encode('utf-16-le')) // 2 > 200:
+            raise ValueError('Sample filenames must be at most 200 characters, leaving room for the data extension.')
         if name.casefold() in names:
             raise ValueError(f'Duplicate reaction name: {name}. Rename it in LCMS Input first.')
         names.add(name.casefold())
@@ -65,7 +83,7 @@ def sample_csv(samples, settings):
             raise ValueError(f'Duplicate LCMS well: {well}.')
         wells.add(well)
         row = {field: str(settings.get(field, '')).strip() for field in METHOD_FIELDS}
-        row.update(FILE_NAME=name, SAMPLE_LOCATION=f'{plate}:{match[1]},{int(match[2])}', TYPE='ANALYTE', INJ_VOL=f'{volume:g}')
+        row.update(FILE_NAME=name, SAMPLE_LOCATION=f'{plate}:{match[1]},{int(match[2])}', TYPE='ANALYTE', INJ_VOL=format(volume, 'f'))
         output.append((ord(match[1]), int(match[2]), row))
     if not output:
         raise ValueError('No LCMS Input samples are available.')

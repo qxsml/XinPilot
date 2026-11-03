@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 from copy import deepcopy
 from xinpilot.application.opentrons_domain import (
     FLEX_SLOTS,
@@ -112,8 +114,7 @@ PIPETTE_OPTIONS = {
         "flex_1channel_1000",
         "flex_8channel_50",
         "flex_8channel_1000",
-        "flex_96channel_200",
-        "flex_96channel_1000",
+
     ),
     "OT-2": (
         "None",
@@ -588,7 +589,7 @@ class OpentronsFrame(ttk.Frame):
                 return
 
         self.lower_plan_panes.bind("<Configure>", initialize_lower_sash, add="+")
-        self.after_idle(initialize_lower_sash)
+        after_idle_owned(self, initialize_lower_sash)
 
         row_pane.rowconfigure(0, weight=1)
         row_pane.columnconfigure(0, weight=1)
@@ -2856,10 +2857,7 @@ class OpentronsFrame(ttk.Frame):
             pipette = pipette_var.get().strip()
             # A compatible explicit rack choice survives pipette re-selection.
             rack = tiprack_var.get().strip()
-            allowed = PIPETTE_TIPRACK_CAPACITIES.get(
-                pipette,
-                (200, 300) if pipette.startswith("p300_") else (PIPETTE_MAX_UL.get(pipette),),
-            )
+            allowed = PIPETTE_TIPRACK_CAPACITIES.get(pipette, ())
             capacity = _tiprack_capacity(rack)
             compatible = rack in TIPRACK_OPTIONS[robot] and capacity in allowed
             if pipette in {"", "None"} or compatible:
@@ -5875,7 +5873,7 @@ class OpentronsFrame(ttk.Frame):
 
     def _on_structure_source_changed(self, *_args):
         if self.show_structure_var.get():
-            self.after_idle(self._refresh_structure_window)
+            after_idle_owned(self, self._refresh_structure_window)
 
     def _close_structure_window(self):
         win = self.structure_window
@@ -6910,7 +6908,7 @@ class OpentronsFrame(ttk.Frame):
             return
         Path(out).write_text(text, encoding="utf-8")
         self.status_var.set(f"Generated {Path(out).name}")
-        messagebox.showinfo("Opentrons", f"Protocol generated:\n{out}")
+        messagebox.showinfo("Opentrons", f"Protocol generated:\n{out}\n\nSimulate the exported protocol in Opentrons before running it. Confirm module, adapter and plate compatibility in that simulation.")
 
     def export_state(self) -> Dict[str, object]:
         return {

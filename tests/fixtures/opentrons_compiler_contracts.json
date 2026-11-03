@@ -110,7 +110,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "56ab0bc202e6e192015f0c9ce2bd40b22582f0a663a49f2b3dd48c5590c001d7"
+    "sha256": "63d92ecc0419f1673f922573f94fd18de1ce776ff2dcd1e8214fe17c15f37ee6"
   },
   {
     "name": "multi_air_no_blowout",
@@ -223,7 +223,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "5a6dd88fd1ae5ef5d464035f609b25a9482e24b06c3eed537675ffcb39b07981"
+    "sha256": "48192771f3295813f4038e188888cfedca7247ea8613f786dbe23e0923bd9e00"
   },
   {
     "name": "multi_excess_waste",
@@ -344,7 +344,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "883c448c51bb8a953034d65c7dac29ea90902166e2b2593cf30496ec446fb19b"
+    "sha256": "e101bb714c9d11db2441a5378ff6384d8459b598b57aaee7be70d752287e0863"
   },
   {
     "name": "mixing_and_delays",
@@ -457,7 +457,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "37dee3385ca5730f25f54e68a54f8e9e349ed63508c284d98961f757eadfb745"
+    "sha256": "d722480e04b756ff60d907056bfb2f2e1fe6cd9c7fe762e255067d59d0084207"
   },
   {
     "name": "eight_channel_column",
@@ -570,7 +570,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "4d5b84c17f57dbdf26518b033e2de9b28930526ac3dba71239381626a16f4ad0"
+    "sha256": "a2817caa6dbb5c0b75165b0a17d01b3c7eef3ac349d96da8ed85b53cc3b2fa30"
   },
   {
     "name": "eight_channel_batch_chemicals",
@@ -725,7 +725,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "da47decbb2be59545ee326d6e09b378a767c4d6de9a9dbd6c20e690cc46ac247"
+    "sha256": "c1767ac6eff6adf2e7b41c3a6183b0dfbe10420d1b3f48c135d825c51bdbc729"
   },
   {
     "name": "ot2_single",
@@ -837,7 +837,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "4a14ee8982be702a8a62303b7165fc529136e62eb6aeb41cf6eb196bd4074479"
+    "sha256": "031f56b3fbd17ebbc6d5c1351e257f4e499638c0d23efeff1ffc3d62df9bb4dd"
   },
   {
     "name": "temperature_module",
@@ -964,7 +964,7 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "83d2d8cf85d36afd547bb998d0973a1d5684499e69ce9b50866427888d0e2ec5"
+    "sha256": "aab0c0a0dd7244563cd7d28ccca2903c2af35555840f27206271cc3ae0be3c63"
   },
   {
     "name": "sequence_tip_retention",
@@ -1285,6 +1285,6 @@
       "flex_gripper": false,
       "trash_slot": "A3"
     },
-    "sha256": "071c7a5620053482e6168999ef6d73511f824e9c0a5c22ad9a7f5cfb66ef2182"
+    "sha256": "732fbe7b1d9abe0738a17e0ecbd3975837c2b6a24897959bd2ca9eada8cb3223"
   }
 ]

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 from xinpilot_tooltips import Tooltip
 
 from xinpilot_shared import *
 from xinpilot.application.analysis_jobs import (
     AnalysisJob as _AnalysisJob,
+    analysis_failure,
     input_signature as _analysis_input_signature,
     platemap_kind as _pyparse_platemap_kind,
     has_analysis_results as _output_dir_has_pyparse_results,
@@ -52,7 +55,7 @@ class PyParseRunnerFrame(ttk.Frame):
 
         self._build_ui()
         self._suspend_platemap_invalidation = False
-        self.after(100, self._drain_logs)
+        after_owned(self, 100, self._drain_logs)
 
     def _build_ui(self):
         files = ttk.LabelFrame(self, text=f"{self.title} inputs", padding=8, style="FileRegion.TLabelframe")
@@ -421,11 +424,21 @@ class PyParseRunnerFrame(ttk.Frame):
     def _worker(self, cmd, job):
         try:
             self.proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+            reported_failure = False
             for line in self.proc.stdout:
+                if "a fatal exception occurred" in line.lower() or line.lstrip().startswith("Traceback (most recent call last):"):
+                    reported_failure = True
                 self.log_q.put(("__LOG__", job.token, line))
             rc = self.proc.wait()
+            failure = analysis_failure(job.output_dir)
+            if reported_failure and not failure:
+                failure = "PyParse reported an analysis failure. Review the log panel."
+            if failure:
+                rc = rc or 1
+                self.log_q.put(("__LOG__", job.token, f"\n[ERROR] {failure}\n"))
             elapsed = time.time() - job.started_at
-            self.log_q.put(("__LOG__", job.token, f"\n=== Finished with code {rc} in {elapsed:.1f}s ===\n"))
+            outcome = "Analysis completed" if rc == 0 else "Analysis failed"
+            self.log_q.put(("__LOG__", job.token, f"\n=== {outcome} (code {rc}, {elapsed:.1f}s) ===\n"))
             self.log_q.put(("__DONE__", job, rc, elapsed))
         except Exception as exc:
             self.log_q.put(("__LOG__", job.token, f"\n[ERROR] {exc}\n"))
@@ -449,7 +462,7 @@ class PyParseRunnerFrame(ttk.Frame):
         except Exception:
             relevant = False
         if not relevant:
-            self.status_label.config(text="Finished; results kept in original output folder")
+            self.status_label.config(text="Finished; results kept in original output folder" if rc == 0 else "Failed; see log in original output folder")
             self.log.insert("end", f"\nProject or analytical targets changed during analysis. Results were not attached to the current project. Output: {job.output_dir}\n")
             self.log.see("end")
         elif rc == 0 and self.result_callback:
@@ -474,4 +487,4 @@ class PyParseRunnerFrame(ttk.Frame):
                     self.log.see("end")
         except queue.Empty:
             pass
-        self.after(100, self._drain_logs)
+        after_owned(self, 100, self._drain_logs)

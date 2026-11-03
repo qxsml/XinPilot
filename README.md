@@ -10,11 +10,18 @@ The application combines a TypeScript user interface with Python-based chemistry
 
 ### Download and run
 
-XinPilot is available as a standalone Windows executable. **No installation is required.**
+XinPilot is available as a standalone Windows executable. **No Python installation is required.**
 
 1. Download the latest `.exe` file from [GitHub Releases](https://github.com/qxsml/XinPilot/releases).
 2. Double-click the downloaded executable to launch XinPilot.
 3. Start creating or importing compound records and planning experiments.
+
+### Requirements
+
+The standalone executable requires Windows x64 and the Microsoft Edge WebView2
+Runtime. The executable is unsigned; Windows may identify its publisher as
+unknown. See the [setup guide](docs/setup.md) for source setup and dependencies,
+and the [testing guide](docs/testing.md) for validation commands.
 
 ### Basic workflow
 
@@ -34,7 +41,25 @@ Additional instructions are available in the [documentation](docs/).
 
 Compound Notes provides a centralized workspace for recording Chemical IDs, molecular structures, chemical names, stock concentrations, quantities, and reference information.
 
-Compound information can be retrieved through supported CAS-number and SMILES lookups. Integrated stock-solution calculations assist with determining the solvent volumes required for preparing solutions at specified concentrations.
+The existing **Load Excel** button accepts `.xlsx` and UTF-8 `.csv` files using
+the same column names and record-handling rules. CSV imports preserve text IDs
+and quoted fields. Saving imported CSV records uses an Excel destination;
+the original CSV is not overwritten.
+
+SMILES input is parsed locally with RDKit, which calculates molecular weight and draws the structure. CAS-number lookup retrieves compound information from PubChem online. Integrated stock-solution calculations assist with determining the solvent volumes required for preparing solutions at specified concentrations.
+
+### Compound lookup privacy
+
+Selecting a compound record uses cached images or local RDKit rendering. If local
+rendering fails, a popup offers **Fetch preview from PubChem** or **Cancel**.
+Only choosing the fetch option sends the compound's SMILES to PubChem. Cancelling
+or closing the popup makes no image request. No online permission is remembered
+for other structures.
+
+**From SMILES** does not perform an online compound-information lookup. **From CAS**
+is an explicit online PubChem lookup. Laboratories handling confidential structures
+should decline online previews and use local SMILES input when online lookup is
+not permitted.
 
 ### Synthesis planning
 

@@ -34,6 +34,7 @@ Additional checks:
 
 ```bat
 python -B scripts/verify_source_manifest.py
+python -B scripts/check_python_syntax.py
 python -B scripts/build_renderer.py
 python -m ruff check xinpilot desktop scripts/build_renderer.py scripts/setup_renderer_bundler.py
 ```

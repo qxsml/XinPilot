@@ -31,6 +31,7 @@ from .opentrons_domain import (
     module_key_from_move_target,
     normalize_tip_policy,
 )
+from .opentrons_modules import validate_heater_shaker_stack
 from .opentrons_validation import (
     labware_by_alias,
     current_labware_slot,
@@ -80,6 +81,11 @@ def compile_protocol(request: OpentronsCompileRequest) -> str:
     robot = request.robot
     pipettes = request.pipettes
     module_configs = request.module_configs
+    for module in module_configs:
+        validate_heater_shaker_stack(
+            module, labware_by_alias(request.labware_configs, module.get("labware_alias")),
+            request.api_level,
+        )
     rows = []
     uses_flex_8_channel = False
     api_parts = tuple(int(part) for part in request.api_level.strip().split("."))
@@ -380,6 +386,10 @@ def compile_protocol(request: OpentronsCompileRequest) -> str:
                         f"Row {len(rows) + 1} moves labware onto {target_module['type']}. "
                         "Select an adapter for that module first."
                     )
+                validate_heater_shaker_stack(
+                    target_module, labware_by_alias(request.labware_configs, move_labware_alias),
+                    request.api_level,
+                )
                 move_target_kind = "module"
                 move_target_key = target_module_key
                 move_to_slot = str(target_module["slot"])
@@ -895,6 +905,7 @@ def compile_protocol(request: OpentronsCompileRequest) -> str:
         "        src = source_labware[row['source_well']]",
         "        src_location = well_location(src, row.get('aspirate_depth_mm'), row.get('aspirate_depth_reference', 'from bottom'))",
         "        dests = [dest_labware[name] for name in row['dest_wells']]",
+        "        # channel_target_wells are nozzle reference positions; dest_wells lists all intended physical wells.",
         "        targets = [dest_labware[name] for name in row.get('channel_target_wells', row['dest_wells'])]",
         "        dispense_volume = row['volume_ul']",
         "        step_name = str(row.get('step_name') or f'Transfer {i}')",

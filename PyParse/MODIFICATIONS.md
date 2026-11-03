@@ -1,14 +1,14 @@
-# XinPilot integration modifications to PyParse
+# Original PyParse: restoration record
 
-The upstream baseline and commit are recorded in [PROVENANCE.md](PROVENANCE.md).
-The original GSK copyright, authors and Apache-2.0 license header are retained.
+On 2 November 2026 the five original engine files were restored byte-for-byte to
+the pinned upstream commit recorded in [PROVENANCE.md](PROVENANCE.md).
+There are no XinPilot modifications in those engine files.
 
-`PyParse.py` was modified by Xin Qiu for XinPilot in 2026 for PyInstaller-aware
-Jinja2 template lookup and defensive, string-preserving CSV import.
+This removes the earlier template-loader and string-preserving CSV adaptations,
+the added XinPilot modification comment, and the recent pie-chart/exit-status
+fixes. Upstream author, copyright and license text remains intact.
 
-On 30 October 2026, an explicit modification notice was added to that file.
-This attribution-only update changes no executable Python statements or analytical behavior.
-The protected-file integrity checksum was refreshed for this approved comment.
-
-Additional analytical modifications are maintained separately in
-[Modified PyParse](../Modified%20PyParse/MODIFICATIONS.md).
+Failure detection and the analysis-failed UI are implemented in XinPilot's
+runner, outside PyParse. The original empty-pie error is not repaired locally.
+The separate [Modified PyParse](../Modified%20PyParse/MODIFICATIONS.md) engine
+and its modification notices are unchanged.

@@ -1,17 +1,23 @@
-# Bundled PyParse provenance
+# Bundled original PyParse provenance
 
-The bundled PyParse baseline traces to `thatchemistryguy/PyParse`, branch
+The original engine is copied byte-for-byte from `thatchemistryguy/PyParse`,
 `v1_archive`, commit `9d08f0803e68e385ec4e5d7d5179fb89b104b5cb`
-(`Add conda-environment yml`, 2026-08-04).
+(`Add conda-environment yml`, 4 August 2026).
 
-After newline normalization, local `__init__.py`, `getShimadzuData.py`,
-`getWatersData.py`, and `templates/html_template.html` match that commit. The
-local `PyParse.py` differs by two XinPilot integration changes: PyInstaller-aware
-template lookup through Jinja2 `FileSystemLoader`, and defensive
-string-preserving CSV import. These changes support embedding without altering
-the intended analytical workflow.
+The unchanged upstream files are `PyParse.py`, `__init__.py`, `getWatersData.py`,
+`getShimadzuData.py` and `templates/html_template.html`. Their SHA-256 hashes are
+recorded in `UPSTREAM_SHA256.json` and checked by
+`tests/test_original_pyparse_integrity.py`. Comparison includes original newline
+bytes; it is not only a comparison of executable statements.
 
-The original bundled file is protected by the XinPilot regression test
-`tests/test_original_pyparse_integrity.py` and must not be edited casually.
-Additional XinPilot analytical changes are isolated in `../Modified PyParse/`
-and documented in `../Modified PyParse/MODIFICATIONS.md`.
+Source: https://github.com/thatchemistryguy/PyParse/tree/9d08f0803e68e385ec4e5d7d5179fb89b104b5cb
+
+XinPilot's runner provides process launching and failure reporting outside the
+engine. Upstream parsing, molecular-weight handling, plotting and exit behavior
+remain unchanged. The bundled runtime can still expose upstream compatibility
+errors, including the empty-pie error; XinPilot reports detected analysis failures.
+The source template loader works without changes. A rebuilt executable still
+requires its own packaging validation.
+
+The local documentation and checksum manifest are XinPilot metadata, not upstream
+engine files. Analytical modifications remain separately in `../Modified PyParse/`.

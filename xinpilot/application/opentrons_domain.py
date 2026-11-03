@@ -86,6 +86,13 @@ PIPETTE_TIPRACK_CAPACITIES = {
     "flex_8channel_50": (50,),
     "flex_1channel_1000": (50, 200, 1000),
     "flex_8channel_1000": (50, 200, 1000),
+    "flex_96channel_200": (50, 200),
+    "flex_96channel_1000": (50, 200, 1000),
+    "p20_single_gen2": (20,),
+    "p20_multi_gen2": (20,),
+    "p300_single_gen2": (200, 300),
+    "p300_multi_gen2": (200, 300),
+    "p1000_single_gen2": (1000,),
 }
 
 

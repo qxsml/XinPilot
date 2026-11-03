@@ -78,6 +78,79 @@ class TecanImportReviewTests(unittest.TestCase):
         self.assertEqual(baseline, self.frame._active_gwl_blocks_snapshot)
         self.assertTrue(self.frame._current_gwl_has_unsaved_changes())
 
+    def test_push_saves_approved_edits_and_matches_file_before_callback(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'saved.gwl'
+            lines = worklist([('DeepPlate1', 1, 20)])
+            path.write_text('\n'.join(lines) + '\n')
+            self.load_entry(lines, path=str(path))
+            self.frame.v_chemical.set('BB1')
+            self.frame.v_dest_wells.set('B12')
+            pushed = []
+
+            def receive(rows):
+                # Callback must see the newly saved commands, not the old file.
+                self.assertEqual(['B12'], [row['well'] for row in rows])
+                self.assertEqual(path.read_text().splitlines(), self.frame._build_lines())
+                pushed.extend(rows)
+
+            self.frame.push_callback = receive
+            with mock.patch.object(tecan_frame.messagebox, 'askyesno', return_value=True) as prompt, \
+                    mock.patch.object(tecan_frame.messagebox, 'showerror') as error:
+                self.frame._push_all_gwls_to_cheminformatics()
+            error.assert_not_called()
+            prompt.assert_called_once()
+            self.assertEqual(1, len(pushed))
+            self.assertFalse(self.frame._current_gwl_has_unsaved_changes())
+
+    def test_external_edit_blocks_entire_push_without_overwriting_file(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'saved.gwl'
+            lines = worklist([('DeepPlate1', 1, 20)])
+            path.write_text('\n'.join(lines) + '\n')
+            self.load_entry(lines, path=str(path))
+            self.frame.v_chemical.set('BB1')
+            changed = '\n'.join(worklist([('DeepPlate1', 2, 20)])) + '\n'
+            path.write_text(changed)
+            self.frame.push_callback = mock.Mock()
+            with mock.patch.object(tecan_frame.messagebox, 'showerror') as error, \
+                    mock.patch.object(tecan_frame.messagebox, 'askyesno') as prompt:
+                self.frame._push_all_gwls_to_cheminformatics()
+            self.frame.push_callback.assert_not_called()
+            prompt.assert_not_called()
+            self.assertIn('outside XinPilot', error.call_args.args[1])
+            self.assertEqual(changed, path.read_text())
+
+    def test_new_gwl_can_be_saved_by_push_confirmation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'new.gwl'
+            entry = self.load_entry(worklist([('DeepPlate1', 1, 20)]), path=str(path))
+            entry.update(content='', blocks=[])
+            self.frame._active_gwl_snapshot = ''
+            self.frame._active_gwl_blocks_snapshot = ''
+            self.frame.v_chemical.set('BB1')
+            self.frame.push_callback = mock.Mock()
+            with mock.patch.object(tecan_frame.messagebox, 'askyesno', return_value=True), \
+                    mock.patch.object(tecan_frame.messagebox, 'showerror') as error:
+                self.frame._push_all_gwls_to_cheminformatics()
+            error.assert_not_called()
+            self.frame.push_callback.assert_called_once()
+            self.assertTrue(path.is_file())
+
+    def test_portable_consistent_gwl_needs_no_save_and_empty_gwl_is_not_restricted(self):
+        entry = self.load_entry(worklist([('DeepPlate1', 1, 20)]))
+        entry['requires_save_as'] = True
+        entry['path'] = 'not-on-this-computer.gwl'
+        with mock.patch.object(tecan_frame.messagebox, 'askyesno') as prompt, \
+                mock.patch.object(tecan_frame.messagebox, 'showerror') as error:
+            self.assertTrue(self.frame._prepare_gwls_for_push())
+        error.assert_not_called()
+        prompt.assert_not_called()
+        self.frame.exported_gwl_files = [dict(name='empty.gwl', content='', blocks=[])]
+        self.frame.blocks = []
+        self.frame._active_gwl_index = None
+        self.assertTrue(self.frame._prepare_gwls_for_push())
+
     def test_switch_to_another_gwl_still_can_cancel_and_keep_edits(self):
         self.load_entry(worklist([("DeepPlate1", 1, 20)]))
         self.frame.v_dest_volume.set("30")

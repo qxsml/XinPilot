@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import json
 import math
 import os
@@ -521,7 +523,7 @@ class CompoundNotesFrame(ttk.Frame):
         # Set initial split to 1/3 (left) : 2/3 (right).
         self._initial_split_ready = False
         self.split.bind("<Configure>", lambda _event: self._set_initial_split(), add="+")
-        self.after_idle(self._set_initial_split)
+        after_idle_owned(self, self._set_initial_split)
 
     def _set_initial_split(self):
         if self._initial_split_ready:
@@ -566,7 +568,7 @@ class CompoundNotesFrame(ttk.Frame):
             return
         if self._pending_live_update is not None:
             self.after_cancel(self._pending_live_update)
-        self._pending_live_update = self.after(120, self._apply_live_update)
+        self._pending_live_update = after_owned(self, 120, self._apply_live_update)
 
     def _apply_live_update(self):
         self._pending_live_update = None
@@ -579,7 +581,7 @@ class CompoundNotesFrame(ttk.Frame):
             return
         if self._quantity_auto_save_job is not None:
             self.after_cancel(self._quantity_auto_save_job)
-        self._quantity_auto_save_job = self.after(700, self._auto_save_quantity_column)
+        self._quantity_auto_save_job = after_owned(self, 700, self._auto_save_quantity_column)
 
     def _auto_save_quantity_column(self):
         self._quantity_auto_save_job = None
@@ -1053,40 +1055,9 @@ class CompoundNotesFrame(ttk.Frame):
             local_mw = f"{Descriptors.MolWt(mol):.4f}"
             self.vars["MW"].set(local_mw)
 
-            cid = ""
-            pubchem_ok = False
-            try:
-                s = quote(smiles, safe="")
-                prop_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/{s}/property/CID,MolecularWeight,IUPACName/JSON"
-                data = json.loads(urlopen(prop_url, timeout=20).read().decode("utf-8"))
-                props = data["PropertyTable"]["Properties"][0]
-                cid = props.get("CID") or ""
-                mw = props.get("MolecularWeight")
-                if mw:
-                    self.vars["MW"].set(str(mw))
-                pubchem_ok = True
-            except Exception:
-                # Non-fatal: keep local MW and continue.
-                pass
-
-            if cid and not self.vars["CAS"].get().strip():
-                try:
-                    syn_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{cid}/synonyms/JSON"
-                    syn = json.loads(urlopen(syn_url, timeout=20).read().decode("utf-8"))
-                    lst = syn.get("InformationList", {}).get("Information", [{}])[0].get("Synonym", [])
-                    cas = next((x for x in lst if self._is_valid_cas((x or "").strip())), "")
-                    if cas:
-                        self.vars["CAS"].set((cas or "").strip())
-                except Exception:
-                    pass
-
             self._update_structure_preview(smiles)
-            if pubchem_ok:
-                self.status_var.set("SMILES lookup complete (PubChem + local MW).")
-                messagebox.showinfo("Done", "Fetched available MW/CAS from SMILES.")
-            else:
-                self.status_var.set("SMILES parsed. MW calculated locally (PubChem not found).")
-                messagebox.showinfo("Done", "PubChem lookup unavailable for this SMILES. MW was calculated locally.")
+            self.status_var.set("SMILES parsed and molecular weight calculated locally with RDKit.")
+            messagebox.showinfo("Done", "Structure validated and molecular weight calculated locally. No compound-information lookup was sent to PubChem.")
         except Exception as exc:
             self.status_var.set("SMILES lookup failed")
             messagebox.showerror("SMILES lookup failed", f"Unexpected error:\n{exc}")
@@ -1226,6 +1197,42 @@ class CompoundNotesFrame(ttk.Frame):
         self.cas_cid_var.set("")
         self.cas_status_var.set("")
 
+    def _confirm_pubchem_preview(self) -> bool:
+        """Request consent for this preview only; closing the popup declines."""
+        if self.__dict__.get("_pubchem_preview_pending", False):
+            return False
+        self._pubchem_preview_pending = True
+        try:
+            approved = [False]
+            dialog = tk.Toplevel(self)
+            dialog.title("Online structure preview")
+            dialog.transient(self.winfo_toplevel())
+            ttk.Label(
+                dialog,
+                text="RDKit could not display this structure locally.\n\n"
+                     "Fetching a preview from PubChem will send this compound's SMILES online. "
+                     "Continue only if you are permitted to share this structure.",
+                wraplength=480, padding=16, justify="left",
+            ).pack(fill="x")
+
+            def accept():
+                approved[0] = True
+                dialog.destroy()
+
+            actions = ttk.Frame(dialog, padding=(16, 0, 16, 16))
+            actions.pack(fill="x")
+            cancel = ttk.Button(actions, text="Cancel", command=dialog.destroy)
+            cancel.pack(side="right")
+            ttk.Button(actions, text="Fetch preview from PubChem", command=accept).pack(side="right", padx=8)
+            dialog.protocol("WM_DELETE_WINDOW", dialog.destroy)
+            dialog.bind("<Escape>", lambda _event: dialog.destroy())
+            dialog.grab_set()
+            cancel.focus_set()
+            self.wait_window(dialog)
+            return approved[0]
+        finally:
+            self._pubchem_preview_pending = False
+
     def _update_structure_preview(self, smiles: str):
         smiles = (smiles or "").strip()
         if not smiles:
@@ -1250,7 +1257,10 @@ class CompoundNotesFrame(ttk.Frame):
             self.structure_img = photo
             self.structure_label.configure(image=self.structure_img, text="")
         except Exception:
-            # Fallback to PubChem render for edge cases RDKit cannot depict.
+            # Selection and local rendering must never silently disclose a SMILES.
+            self.structure_label.configure(image="", text="Structure preview unavailable")
+            if not self._confirm_pubchem_preview():
+                return
             try:
                 s = quote(smiles, safe="")
                 img_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/{s}/PNG?image_size=600x600"
@@ -1344,7 +1354,7 @@ class CompoundNotesFrame(ttk.Frame):
         if count > 1:
             self._add_row_count += count - 1
         if self._add_row_job is None:
-            self._add_row_job = self.after_idle(self._flush_blank_rows)
+            self._add_row_job = after_idle_owned(self, self._flush_blank_rows)
 
     def _ask_add_rows(self):
         win = tk.Toplevel(self)
@@ -1519,61 +1529,23 @@ class CompoundNotesFrame(ttk.Frame):
             self.structure_label.configure(image="", text="Structure Preview")
 
     def _load_excel(self, path: Path, mark_loaded: bool = True):
-        if not path.exists():
-            raise FileNotFoundError(f"Excel file not found: {path}")
+        from xinpilot.application.compound_table import read_compound_table
 
-        wb = None
-        raw_wb = None
-        try:
-            wb = openpyxl.load_workbook(path, data_only=True)
-            ws = wb[wb.sheetnames[0]]
-            raw_wb = openpyxl.load_workbook(path, data_only=False)
-            raw_ws = raw_wb[raw_wb.sheetnames[0]]
-
-            # Header-driven mapping (robust to column shifts)
-            header_to_col = {}
-            for c in range(1, ws.max_column + 1):
-                v = ws.cell(1, c).value
-                if v is None:
-                    continue
-                name = str(v).strip()
-                if name:
-                    header_to_col[name] = c
-
-            self.records.clear()
-            self._deleted_source_rows.clear()
-            self._deleted_source_records = []
-            for r in range(2, ws.max_row + 1):
-                row_data = {}
-                nonempty = False
-                for h in DATA_HEADERS:
-                    c = header_to_col.get(h)
-                    val = ws.cell(r, c).value if c else ""
-                    txt = "" if val is None else str(val)
-                    row_data[h] = txt
-                    if txt.strip():
-                        nonempty = True
-                if nonempty:
-                    # Ignore scratch/demo rows like TEMP1, TEMP2, ... from legacy sheets.
-                    row_id = (row_data.get("ID", "") or "").strip().upper()
-                    if re.match(r"^TEMP\d*$", row_id):
-                        continue
-                    source_cells = {
-                        h: raw_ws.cell(r, header_to_col[h]).value if h in header_to_col else ""
-                        for h in DATA_HEADERS
-                    }
-                    self.records.append(CompoundRecord(row_data, source_row=r, source_cells=source_cells))
-
-            self._refresh_tree()
-            self.status_var.set(f"Loaded {len(self.records)} records from: {path.name}")
-            self.excel_loaded = mark_loaded
-            self._set_associated_workbook_name(path.name)
-            self._mark_saved_snapshot()
-        finally:
-            if wb is not None:
-                wb.close()
-            if raw_wb is not None:
-                raw_wb.close()
+        # Parse fully before replacing the current records, including CSV errors.
+        loaded = read_compound_table(path, DATA_HEADERS)
+        records = [CompoundRecord(values, source_row=row, source_cells=cells)
+                   for row, values, cells in loaded]
+        self.records[:] = records
+        self._deleted_source_rows.clear()
+        self._deleted_source_records = []
+        if path.suffix.lower() == ".csv":
+            # CSV is an import source, never an Excel writeback target.
+            self.source_excel = None
+        self._refresh_tree()
+        self.status_var.set(f"Loaded {len(self.records)} records from: {path.name}")
+        self.excel_loaded = mark_loaded
+        self._set_associated_workbook_name(path.name)
+        self._mark_saved_snapshot()
 
     @staticmethod
     def _atomic_save_workbook(wb, path: Path):
@@ -2299,17 +2271,17 @@ class CompoundNotesFrame(ttk.Frame):
         refresh_preview()
 
     def _pick_excel(self):
-        p = filedialog.askopenfilename(filetypes=[("Excel", "*.xlsx")])
+        p = filedialog.askopenfilename(filetypes=[("Excel or CSV", "*.xlsx *.csv"), ("Excel", "*.xlsx"), ("CSV", "*.csv")])
         if not p:
             return
 
         selected = Path(p)
         try:
             self._load_excel(selected, mark_loaded=True)
-            self.source_excel = selected
+            self.source_excel = selected if selected.suffix.lower() != ".csv" else None
         except Exception as exc:
-            messagebox.showerror("Load Excel failed", f"Could not load file:\n{selected}\n\n{exc}")
-            self.status_var.set("Failed to load Excel file")
+            messagebox.showerror("Load compound table failed", f"Could not load file:\n{selected}\n\n{exc}")
+            self.status_var.set("Failed to load compound table")
 
     def _refresh_saved_excel_values(self):
         """Reflect any safely merged workbook edits before the next form commit."""

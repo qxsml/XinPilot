@@ -104,7 +104,7 @@ def run():
         capture("columns.png")
         click("Validate and preview transfers")
         wait(body_contains("Validated 3 transfers"))
-        assert window.evaluate_js("document.querySelectorAll('.tree tbody tr').length") == 3
+        wait("document.querySelectorAll('.tree tbody tr').length===3")
         paths.append(OUT / "blank-source-stocks.xlsx")
         click("Generate source-stock Excel template")
         wait(body_contains("Source-stock template saved"))

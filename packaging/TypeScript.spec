@@ -36,4 +36,4 @@ while queue:
         for item in getattr(pe,'DIRECTORY_ENTRY_IMPORT',[]):
             queue.append(item.dll.decode())
 pyz=PYZ(a.pure)
-exe=EXE(pyz,a.scripts,a.binaries,a.datas,[],name='XinPilot-v1.2.4-Windows-x64',version=str(root/'packaging/version_info.txt'),console=False,icon=str(root/'xinpilot_logo.ico'),upx=False)
+exe=EXE(pyz,a.scripts,a.binaries,a.datas,[],name='XinPilot-v1.2.5-Windows-x64',version=str(root/'packaging/version_info.txt'),console=False,icon=str(root/'xinpilot_logo.ico'),upx=False)

@@ -18,9 +18,10 @@ def open_autolynx_dialog(parent, get_samples):
         ('MS_FILE', 'MS acquisition method', '', None),
         ('MS_TUNE_FILE', 'MS tune file (optional)', '', None),
         ('INLET_FILE', 'LC / inlet method', '', None),
-        ('PROCESS', 'Processing program (optional)', 'OPENLYNX', None),
+        ('PROCESS', 'Processing program (optional)', 'OpenLynx', None),
         ('PROCESS_PARAMS', 'Processing method (.olp)', '', None),
         ('INJ_VOL', 'Injection volume (uL)', '', None),
+        ('max_injection_ul', 'Instrument maximum injection (uL, optional)', '', None),
         ('order', 'Injection order', 'Across rows', ['Across rows', 'Down columns']),
     ]
     values = {}

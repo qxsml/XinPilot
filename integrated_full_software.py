@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xinpilot_callbacks import after as after_owned, after_idle as after_idle_owned
+
 import os
 import json
 import tempfile
@@ -58,7 +60,7 @@ class IntegratedFullApp(ProjectChangeTrackingMixin, tk.Tk):
             pass
         self.geometry("1500x930")
         self.minsize(1200, 760)
-        self.after(0, self._maximize_on_open)
+        after_owned(self, 0, self._maximize_on_open)
         configure_modern_theme(self)
         install_notebook_tab_feedback(self)
         self.tab_icons = make_tab_icons(self)
@@ -360,8 +362,8 @@ class IntegratedFullApp(ProjectChangeTrackingMixin, tk.Tk):
         self.nb.bind("<<NotebookTabChanged>>", self._on_tab_changed)
         self.lcms_nb.bind("<<NotebookTabChanged>>", self._on_lcms_tab_changed)
         self.protocol("WM_DELETE_WINDOW", self._confirm_close)
-        self.after(50, lambda: style_plain_widgets(self))
-        self.after(60, self._raise_project_actions)
+        after_owned(self, 50, lambda: style_plain_widgets(self))
+        after_owned(self, 60, self._raise_project_actions)
         install_tooltips(self)
         install_page_presentation(self)
         self._start_project_tracking()
