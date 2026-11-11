@@ -34,8 +34,9 @@ The root LICENSE and NOTICE record this decision. Retain all third-party terms.
 5. **Experimental examples/SI, if desired.** Supply only the datasets authorized
    for publication. Private validation inputs were deliberately not included.
 
-This release is version 1.2.6, adding master-list Name/Nature updates and
-identity validation across repeated incoming IDs to the existing 1.2.5 features.
+This release is version 1.2.6, adding master-list Name/Nature updates, explicit
+solvent/concentration correction approval, acceptance of distinct physical stocks
+with identical contents, and rejection of repeated incoming IDs.
 Use the matching v1.2.6 tag and executable for publication. Keep VERSION,
 release documentation and Windows version metadata consistent in future releases.
 

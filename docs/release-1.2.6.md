@@ -4,10 +4,15 @@ Patch release for Compound Notes master-list updates.
 
 - Nonblank incoming Name and Nature values replace existing values after the
   existing chemical-identity check. Blank values preserve existing values.
-- Repeated incoming IDs are checked together before writing. Missing, invalid
-  or conflicting SMILES block that ID and report incoming record row numbers.
-- Equivalent structures retain first-occurrence processing. Existing master-ID
-  identity checks, duplicate-name rules and stock-field updates are unchanged.
+- ID identifies one physical stock. New IDs are accepted even when chemical
+  name, structure, solvent and concentration match another stock.
+- Existing-ID solvent or concentration changes require explicit confirmation
+  as corrections, showing old and new values. Cancel leaves the entire ID unchanged.
+- Concentration is compared numerically in M; 0.1 and 0.100 are equivalent.
+- All repeated incoming IDs are blocked, including identical duplicates; the
+  warning identifies the incoming record rows to correct.
+- Existing master-ID structure checks remain mandatory and cannot be overridden.
+  Blank incoming values preserve existing values; quantity zero remains valid.
 
 No project schema, chemistry calculations, AutoLynx export logic or PyParse
 engine changes. See [master-list rules](master-stock-updates.md) and

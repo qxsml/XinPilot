@@ -1,5 +1,7 @@
 """Identity validation and nonblank updates for existing master-stock records."""
 
+from decimal import Decimal, InvalidOperation
+
 STOCK_FIELDS = (
     'MW', 'Density', 'Quantity (mg)', 'Quantity(umol)', 'Quantity input unit',
     'Conc.', 'Solvent', 'Solvent added (uL)', 'Volume',
@@ -45,11 +47,40 @@ def batch_identity_errors(records, normalize_id):
     for key, entries in groups.items():
         if len(entries) < 2:
             continue
-        try:
-            structures = {structure_key(record.get('SMILES')) for _, record in entries}
-            if len(structures) != 1:
-                raise ValueError('SMILES represents different structures')
-        except ValueError as exc:
-            rows = ', '.join(str(row) for row, _ in entries)
-            errors[key] = f"{entries[0][1].get('ID')}: incoming record rows {rows}: {exc}; ID unchanged"
+        rows = ', '.join(str(row) for row, _ in entries)
+        errors[key] = (
+            f"{entries[0][1].get('ID')}: incoming record rows {rows}: "
+            'duplicate ID; correct the batch before updating this ID')
     return errors
+
+
+def stock_corrections(existing, updates):
+    """Return solvent/concentration replacements requiring explicit approval.
+
+    Concentrations are numeric M values. Blank incoming fields are already
+    excluded by stock_updates; filling an unknown master value also needs approval.
+    """
+    changes = {}
+    for field in ('Solvent', 'Conc.'):
+        if field not in updates:
+            continue
+        old, new = existing.get(field), updates[field]
+        old_text = '' if old is None else str(old).strip()
+        new_text = str(new).strip()
+        if field == 'Solvent':
+            equal = old_text.casefold() == new_text.casefold()
+        else:
+            try:
+                new_number = Decimal(new_text)
+                if not new_number.is_finite() or new_number < 0:
+                    raise InvalidOperation
+            except InvalidOperation:
+                raise ValueError('Concentration must be a finite nonnegative number in M') from None
+            try:
+                old_number = Decimal(old_text)
+                equal = old_number.is_finite() and old_number == new_number
+            except InvalidOperation:
+                equal = False
+        if not equal:
+            changes[field] = (old, new)
+    return changes

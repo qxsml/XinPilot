@@ -25,7 +25,7 @@ from PIL import Image, ImageTk
 import io
 from rdkit import Chem, rdBase
 from rdkit.Chem import Draw, Descriptors
-from xinpilot.application.stock_update import batch_identity_errors, stock_updates, structure_key
+from xinpilot.application.stock_update import batch_identity_errors, stock_corrections, stock_updates, structure_key
 
 DATA_HEADERS = [
     "ID", "MW", "Molarity(umol): used in each reaction", "Density", "Volume", "Catalogue NO.", "CAS",
@@ -1920,9 +1920,7 @@ class CompoundNotesFrame(ttk.Frame):
             existing_ids = set()
             existing_id_rows = {}
             ambiguous_ids = set()
-            existing_names = set()
             id_col = header_to_col.get("ID")
-            name_col = header_to_col.get("Name")
             for row in range(2, ws.max_row + 1):
                 if id_col:
                     row_id = self._normalize_key(ws.cell(row, id_col).value)
@@ -1931,10 +1929,6 @@ class CompoundNotesFrame(ttk.Frame):
                             ambiguous_ids.add(row_id)
                         existing_ids.add(row_id)
                         existing_id_rows[row_id] = row
-                if name_col:
-                    row_name = self._normalize_key(ws.cell(row, name_col).value)
-                    if row_name:
-                        existing_names.add(row_name)
 
             added = 0
             updated_stock = 0
@@ -1943,11 +1937,10 @@ class CompoundNotesFrame(ttk.Frame):
             blocked = list(batch_errors.values())
             processed_ids = set()
             skipped_id = 0
-            skipped_name = 0
+            cancelled = 0
             skipped_blank_id = 0
             for rec in appendable_records:
                 row_id = self._normalize_key(rec.values.get("ID", ""))
-                row_name = self._normalize_key(rec.values.get("Name", ""))
                 if not row_id:
                     skipped_blank_id += 1
                     continue
@@ -1965,23 +1958,36 @@ class CompoundNotesFrame(ttk.Frame):
                     existing = {h: ws.cell(master_row, c).value for h, c in header_to_col.items()}
                     try:
                         updates = stock_updates(existing, rec.values)
+                        corrections = stock_corrections(existing, updates)
                     except ValueError as exc:
                         blocked.append(f"{rec.values.get('ID')}: {exc}")
                         continue
+                    if corrections:
+                        details = []
+                        for field, (old, new) in corrections.items():
+                            label = 'Concentration (M)' if field == 'Conc.' else field
+                            old_text = '(blank)' if old is None or not str(old).strip() else str(old)
+                            details.append(f"{label}: {old_text} -> {new}")
+                        approved = messagebox.askokcancel(
+                            'Confirm stock correction',
+                            f"ID: {rec.values.get('ID')}\n\n" + '\n'.join(details) +
+                            '\n\nConfirm only if these changes correct a mistake in this stock record. '
+                            'For a different physical stock, use a new ID.\n\n'
+                            'OK confirms the correction and updates this record. '
+                            'Cancel leaves this entire ID unchanged.',
+                            default='cancel')
+                        if not approved:
+                            cancelled += 1
+                            continue
                     changed = False
                     for header, value in updates.items():
-                        if not self._same_display_value(existing.get(header), value):
+                        if header in corrections or not self._same_display_value(existing.get(header), value):
                             ws.cell(master_row, header_to_col[header]).value = value
                             changed = True
                     if changed:
                         updated_stock += 1
-                        if row_name:
-                            existing_names.add(row_name)
                     else:
                         skipped_id += 1
-                    continue
-                if row_name and row_name in existing_names:
-                    skipped_name += 1
                     continue
 
                 new_row = ws.max_row + 1
@@ -1989,14 +1995,12 @@ class CompoundNotesFrame(ttk.Frame):
                     ws.cell(new_row, header_to_col[header]).value = rec.values.get(header, "")
                 existing_ids.add(row_id)
                 existing_id_rows[row_id] = new_row
-                if row_name:
-                    existing_names.add(row_name)
                 added += 1
 
             self._atomic_save_workbook(wb, master_path)
             self.status_var.set(
                 f"Added {added} records to master list; updated {updated_stock} stock record(s); "
-                f"skipped {skipped_id + skipped_name + skipped_blank_id}; blocked {len(blocked)}."
+                f"skipped {skipped_id + skipped_blank_id}; cancelled {cancelled}; blocked {len(blocked)}."
             )
             messagebox.showinfo(
                 "Master list updated",
@@ -2004,9 +2008,9 @@ class CompoundNotesFrame(ttk.Frame):
                 f"Added: {added}\n"
                 f"Updated stock records for existing ID: {updated_stock}\n"
                 f"Skipped duplicate ID: {skipped_id}\n"
-                f"Skipped duplicate Name: {skipped_name}\n"
+                f"Cancelled corrections: {cancelled}\n"
                 f"Skipped missing ID: {skipped_blank_id}\n"
-                f"Blocked identity checks: {len(blocked)}\n\n"
+                f"Blocked validation checks: {len(blocked)}\n\n"
                 f"{master_path}"
             )
             if blocked:
