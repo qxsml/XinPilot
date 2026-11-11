@@ -12,10 +12,69 @@ from xinpilot.application.stock_update import stock_updates, structure_key
 
 
 class MasterStockTests(unittest.TestCase):
+    def test_name_nature_and_numeric_zero_updates(self):
+        existing = {'SMILES': 'CCO', 'Name': 'old', 'Nature': 'old nature'}
+        self.assertEqual(stock_updates(existing, {
+            'SMILES': 'OCC', 'Name': 'new', 'Nature': 'new nature', 'Volume': 0,
+        }), {'Name': 'new', 'Nature': 'new nature', 'Volume': 0})
+        for blank in ['', '  ', None]:
+            self.assertEqual(stock_updates(existing, {
+                'SMILES': 'CCO', 'Name': blank, 'Nature': blank,
+            }), {})
+
+    def test_batch_identity_checks_before_workbook_writes(self):
+        for second_smiles in ['CO', '', 'not-smiles', 'OCC']:
+            with self.subTest(second_smiles=second_smiles), tempfile.TemporaryDirectory() as folder:
+                path = Path(folder) / 'master.xlsx'
+                wb = openpyxl.Workbook()
+                ws = wb.active
+                ws.append(DATA_HEADERS)
+                original = {'ID': 'BB1', 'SMILES': 'CCO', 'Name': 'old',
+                            'Nature': 'old nature', 'Volume': '10'}
+                ws.append([original.get(h, '') for h in DATA_HEADERS])
+                wb.save(path)
+                wb.close()
+                incoming = [
+                    {'ID': 'BB1', 'SMILES': 'CCO', 'Name': 'updated', 'Nature': 'new nature', 'Volume': 0},
+                    {'ID': 'NEW', 'SMILES': 'CCO', 'Name': 'new compound', 'Nature': 'new nature'},
+                    {'ID': ' bb1 ', 'SMILES': second_smiles, 'Volume': '999'},
+                    {'ID': 'new', 'SMILES': second_smiles},
+                    {'ID': 'OTHER', 'SMILES': 'CCC', 'Name': 'unaffected'},
+                ]
+                frame = object.__new__(CompoundNotesFrame)
+                frame._commit_current_form_to_record = Mock()
+                frame.master_stock_excel_var = SimpleNamespace(get=lambda: str(path))
+                frame.status_var = Mock()
+                frame.records = [CompoundRecord(r) for r in incoming]
+                with patch('compound_notes_frame.messagebox.showinfo'), \
+                        patch('compound_notes_frame.messagebox.showwarning') as warning, \
+                        patch('compound_notes_frame.messagebox.showerror') as error:
+                    frame._append_to_master_stock_list()
+                    error.assert_not_called()
+                wb = openpyxl.load_workbook(path)
+                ws = wb.active
+                rows = [{h: ws.cell(r, c + 1).value for c, h in enumerate(DATA_HEADERS)}
+                        for r in range(2, ws.max_row + 1)]
+                wb.close()
+                if second_smiles == 'OCC':
+                    self.assertEqual([r['ID'] for r in rows], ['BB1', 'NEW', 'OTHER'])
+                    self.assertEqual(rows[0]['Name'], 'updated')
+                    self.assertEqual(rows[0]['Nature'], 'new nature')
+                    self.assertEqual(rows[0]['Volume'], 0)
+                    self.assertEqual(rows[0]['SMILES'], 'CCO')
+                    self.assertEqual(rows[1]['Nature'], 'new nature')
+                    warning.assert_not_called()
+                else:
+                    self.assertEqual([r['ID'] for r in rows], ['BB1', 'OTHER'])
+                    for field, value in original.items():
+                        self.assertEqual(rows[0][field], value)
+                    self.assertIn('rows 1, 3', warning.call_args.args[1])
+                    self.assertIn('rows 2, 4', warning.call_args.args[1])
+
     def test_equivalent_smiles_and_preserve_blank_fields(self):
         result = stock_updates({'SMILES': 'CCO', 'Name': 'Ethanol', 'Solvent': 'water'},
                                {'SMILES': 'OCC', 'Name': 'new', 'Volume': '0', 'Solvent': '', 'Conc.': '0.2'})
-        self.assertEqual(result, {'Volume': '0', 'Conc.': '0.2'})
+        self.assertEqual(result, {'Volume': '0', 'Conc.': '0.2', 'Name': 'new'})
         self.assertEqual(structure_key('[CH3:1][OH:2]'), structure_key('CO'))
 
     def test_different_structures_rejected(self):

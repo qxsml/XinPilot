@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Please cite the version of XinPilot used in your work."
 title: XinPilot
 type: software
-version: 1.2.5
+version: 1.2.6
 authors:
   - family-names: Qiu
     given-names: Xin

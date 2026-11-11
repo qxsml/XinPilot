@@ -14,14 +14,14 @@ bundle. `Build_Executable.bat` packages the bundle that is present, so it must
 be kept in sync with renderer changes.
 
 Run `Build_Executable.bat`. `TypeScript.spec` uses `desktop/frozen_entry.py` and
-writes `release/XinPilot-v1.2.5-Windows-x64.exe`. It includes both PyParse routes,
+writes `release/XinPilot-v1.2.6-Windows-x64.exe`. It includes both PyParse routes,
 toolkit/simulator resources, runtime dependencies and third-party notices. It
 does not include private stock/settings files or FASTSOLV/model weights.
 
 After building, run the packaged native diagnostic:
 
 ```bat
-release\XinPilot-v1.2.5-Windows-x64.exe --desktop-check artifacts\packaged-check.json
+release\XinPilot-v1.2.6-Windows-x64.exe --desktop-check artifacts\packaged-check.json
 ```
 
 This opens a real WebView2 window with a synthetic project and checks traces,
@@ -32,8 +32,8 @@ Freeze source/version metadata before producing a publication release, and
 archive that exact release under a persistent identifier.
 
 The matching executable is built from this unified reaction-plate source snapshot.
-See `release/BUILD_INFO.json`, `release/SHA256SUMS.txt` and
-[validation results](../docs/validation-unified-plate.md) for its provenance and checks.
+See `release/BUILD_INFO-1.2.6.json`, `release/SHA256SUMS-1.2.6.txt` and
+[validation results](../docs/validation-1.2.6.md) for its provenance and checks.
 The local `release/` folder is ignored by Git: upload its contents as GitHub
 Release assets, not as source files. Independent clean-PC testing remains
 outstanding.

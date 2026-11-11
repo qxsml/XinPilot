@@ -16,9 +16,13 @@ update and are reported. Other valid records can still be processed.
 The updatable stock fields are molecular weight, density, quantity in mg and
 micromoles, quantity input unit, concentration, solvent, solvent added and volume
 left. Nonblank values replace existing values; blank values do not erase them.
-Zero is a value, not a blank. A blank master name can be filled, but an existing
-name is preserved. Other identity/reference fields remain unchanged.
+Zero is a value, not a blank. Nonblank incoming Name and Nature values also
+replace existing values; blanks preserve them. Other identity/reference fields
+remain unchanged.
 
-Repeated input IDs are processed once. IDs are matched using the existing
+Repeated input IDs are checked as a group before any rows are written. Missing,
+invalid or conflicting SMILES block all additions or updates for that ID and
+report the incoming record row numbers (one-based, excluding the header).
+Equivalent structures retain first-occurrence processing. IDs are matched using the existing
 case-insensitive comparison. The workbook is saved atomically; unrelated cells
 and formulas remain in place. If Excel locks the workbook, close it and retry.

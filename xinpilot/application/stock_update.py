@@ -27,10 +27,29 @@ def stock_updates(existing, incoming):
     if structure_key(existing.get('SMILES')) != structure_key(incoming.get('SMILES')):
         raise ValueError('SMILES represents a different structure; master record unchanged')
     updates = {}
-    for field in STOCK_FIELDS:
+    for field in (*STOCK_FIELDS, 'Name', 'Nature'):
         value = incoming.get(field, '')
         if value is not None and str(value).strip():
             updates[field] = value
-    if not str(existing.get('Name') or '').strip() and str(incoming.get('Name') or '').strip():
-        updates['Name'] = incoming['Name']
     return updates
+
+
+def batch_identity_errors(records, normalize_id):
+    """Return blocked repeated IDs before any master rows are changed."""
+    groups = {}
+    for row, record in enumerate(records, start=1):
+        key = normalize_id(record.get('ID', ''))
+        if key:
+            groups.setdefault(key, []).append((row, record))
+    errors = {}
+    for key, entries in groups.items():
+        if len(entries) < 2:
+            continue
+        try:
+            structures = {structure_key(record.get('SMILES')) for _, record in entries}
+            if len(structures) != 1:
+                raise ValueError('SMILES represents different structures')
+        except ValueError as exc:
+            rows = ', '.join(str(row) for row, _ in entries)
+            errors[key] = f"{entries[0][1].get('ID')}: incoming record rows {rows}: {exc}; ID unchanged"
+    return errors

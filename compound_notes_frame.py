@@ -25,7 +25,7 @@ from PIL import Image, ImageTk
 import io
 from rdkit import Chem, rdBase
 from rdkit.Chem import Draw, Descriptors
-from xinpilot.application.stock_update import stock_updates, structure_key
+from xinpilot.application.stock_update import batch_identity_errors, stock_updates, structure_key
 
 DATA_HEADERS = [
     "ID", "MW", "Molarity(umol): used in each reaction", "Density", "Volume", "Catalogue NO.", "CAS",
@@ -1938,7 +1938,9 @@ class CompoundNotesFrame(ttk.Frame):
 
             added = 0
             updated_stock = 0
-            blocked = []
+            batch_errors = batch_identity_errors(
+                [rec.values for rec in self.records], self._normalize_key)
+            blocked = list(batch_errors.values())
             processed_ids = set()
             skipped_id = 0
             skipped_name = 0
@@ -1953,6 +1955,8 @@ class CompoundNotesFrame(ttk.Frame):
                     skipped_id += 1
                     continue
                 processed_ids.add(row_id)
+                if row_id in batch_errors:
+                    continue
                 if row_id in existing_ids:
                     master_row = existing_id_rows.get(row_id)
                     if row_id in ambiguous_ids:

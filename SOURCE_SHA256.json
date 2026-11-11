@@ -1,5 +1,5 @@
 {
-  "version": "1.2.5",
+  "version": "1.2.6",
   "files": {
     ".gitattributes": {
       "sha256": "e091a3d053a872ac44788654a16a321ded25623e3a9376b2e0b972f347e6571c",
@@ -154,12 +154,12 @@
       "bytes": 338114
     },
     "CITATION.cff": {
-      "sha256": "a8ad400e6f94ea095f3082eb3c94b75d87da60cb0bbc760dfbf4d3fe064d214d",
+      "sha256": "06a1ec690bba430d4c0e1c65b287d9ac4a826eb0b8af2d8a0c772fce44fbc640",
       "bytes": 308
     },
     "compound_notes_frame.py": {
-      "sha256": "3a2016dc720c6d4f7a52e0b3446d16c0f5a30addeb527e1b0d6d33575b979a8b",
-      "bytes": 110009
+      "sha256": "ae5d6171a4f55667311224fb4fae150fc2d666985e4e9ce4c4c30684e7b90429",
+      "bytes": 110260
     },
     "CONTRIBUTING.md": {
       "sha256": "ae3e5e54272856435f20552616a609cb11df940778859dde30ce33c93628d933",
@@ -314,16 +314,16 @@
       "bytes": 1058
     },
     "docs/master-stock-updates.md": {
-      "sha256": "14b76e1e280c88f488b5306c7305c08b4b9797d6291de8281e5133715505f9d0",
-      "bytes": 1516
+      "sha256": "47a9e1c25e099a42b8f868092ecd8fac76d1e673dfdce69703e95229dea5243f",
+      "bytes": 1789
     },
     "docs/peak-inspection.md": {
       "sha256": "9977119dd6c556616df85202dacc0af1e7f2c5904e41ff6652ce0b119f1a04bb",
       "bytes": 2774
     },
     "docs/publication.md": {
-      "sha256": "80401e3b23370da723a26bbf96c53addd65f710d8b3491565f2653178211ba19",
-      "bytes": 3009
+      "sha256": "11dbf404c691812b1e0736fc75ffec417771693eff9a47b7b4bfdb9d5e89524a",
+      "bytes": 2998
     },
     "docs/release-1.0.1.md": {
       "sha256": "e38196cf4d853ffaaa8dc5846411f307e302a133f639925347c93bf7b4923202",
@@ -365,6 +365,10 @@
       "sha256": "4f727ba80926f1fbbfa160fa1c346b5c03103e7965c9514ebacd81404307cce4",
       "bytes": 1276
     },
+    "docs/release-1.2.6.md": {
+      "sha256": "d4d2b3d36f28395c33ef1497ffeb5986d119887000b7818f1e6c0ddd5110d758",
+      "bytes": 892
+    },
     "docs/review-fixes-2026-10-02.md": {
       "sha256": "998a9a39f0dbc9237bdd5135f29f52e57ab8fdea432fcf14348b5cf630267fa8",
       "bytes": 3179
@@ -404,6 +408,10 @@
     "docs/validation-1.2.5.md": {
       "sha256": "4ecfd8df589745ae3d4fc0e796ba14f09c17375463615ed93b888dbbc3d7d53c",
       "bytes": 1778
+    },
+    "docs/validation-1.2.6.md": {
+      "sha256": "28b46b38760de34e5d2cb93760f34e4d7e070d331ccc224036f5e9f67b21fd76",
+      "bytes": 2158
     },
     "docs/validation-external-import.md": {
       "sha256": "23bde251712eaf2d1bc8bd299de58972acb94cbb059902cb026d4dd3f766094d",
@@ -522,15 +530,15 @@
       "bytes": 379164
     },
     "packaging/README.md": {
-      "sha256": "615b8f33f795e6591e74faff836d8518ccc4f43fff64751b247d1b22ef129d40",
-      "bytes": 1928
+      "sha256": "9df610f88bec231c7172b569eb55f2572f78c890572e74001a7b222012c3b5e5",
+      "bytes": 1932
     },
     "packaging/TypeScript.spec": {
-      "sha256": "c1ecf4eda73b93eb2bbc8bbac0271e4192b0a75758f7e013b38e84f203512c79",
+      "sha256": "949a3c0dd93131b6a2ae21ad5100c9b64df5105b1a68d73513ce27fbb58c06d1",
       "bytes": 3135
     },
     "packaging/version_info.txt": {
-      "sha256": "18f82c5e1894a55950959c78ba410cb7edace5b18c766112657dc5f7bab5d3ae",
+      "sha256": "e4c664e3c800070a7cb44e84b5ae621b48f70a6ec21a04bc61a63e24e4447abe",
       "bytes": 535
     },
     "page_presentation.py": {
@@ -590,8 +598,8 @@
       "bytes": 77385
     },
     "README.md": {
-      "sha256": "18be2b2bf054de835c7f79646944f0ca5e9b9f38f91dd19ee26db3b904daf2fc",
-      "bytes": 11321
+      "sha256": "592e44a74264597d2f47029a9424255a62e9bdfc12a38ecd9521aa42f1b6a4f2",
+      "bytes": 11460
     },
     "requirements-dev.txt": {
       "sha256": "0d9ff3c86b35c49ad07375739e013d99ec91c3cf09dd2f34ba85f190bf2a1ad0",
@@ -614,7 +622,7 @@
       "bytes": 1387
     },
     "scripts/check_executable.py": {
-      "sha256": "5a09a760870d72ed1de7e1a9fc0653db9ccc4a5bdb15439bf9c08378baa0cc90",
+      "sha256": "70c45a8861287e489a11dde774ccf7dffa567ea5cc0f069cf3a0408cd75d9a23",
       "bytes": 2026
     },
     "scripts/check_python_syntax.py": {
@@ -858,8 +866,8 @@
       "bytes": 12356
     },
     "tests/test_master_stock_update.py": {
-      "sha256": "dccdbf7a10061f1f8480ec90e220114fd476db45ba507df15fc0cdfbef4a0946",
-      "bytes": 4893
+      "sha256": "bad3662eea5a6f065f27e47a423199be3ae93f852461fe66de0669523d80d619",
+      "bytes": 8356
     },
     "tests/test_modified_pyparse_annotations.py": {
       "sha256": "d30427ea6bd22b6c0232d99cea81fe9b32fc37413f1031fc4d7b36a441895332",
@@ -1346,7 +1354,7 @@
       "bytes": 8372
     },
     "VERSION": {
-      "sha256": "5e7c925a7f21dd846ece070bac1369556080299cccb7ba2046609c451231feb6",
+      "sha256": "22630447b8d9504f4347722e0003c4ae1f243117b5a78e2ed6294cd0b2fb2493",
       "bytes": 7
     },
     "well_map.py": {
@@ -1418,8 +1426,8 @@
       "bytes": 5092
     },
     "xinpilot/application/stock_update.py": {
-      "sha256": "da2a91285744d9290b6da923a8686bcfa87d2d718e5f1bb0898221ed0a382e6e",
-      "bytes": 1475
+      "sha256": "9972f228c441b96cd6ba6b0f52767ae1c7f9ab79c6b2934989b89b2eb60b6901",
+      "bytes": 2214
     },
     "xinpilot/application/tecan_domain.py": {
       "sha256": "ea4092037185fe8c5178d46665a268ef88b7a7df422b114221d2dc1026898437",

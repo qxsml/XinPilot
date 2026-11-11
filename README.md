@@ -8,6 +8,9 @@ The application combines a TypeScript user interface with Python-based chemistry
 
 ## Getting started
 
+Current source release: **1.2.6**. See the [release notes](docs/release-1.2.6.md)
+for master-list update and duplicate-ID protections.
+
 ### Download and run
 
 XinPilot is available as a standalone Windows executable. **No Python installation is required.**
