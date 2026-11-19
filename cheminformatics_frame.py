@@ -1367,6 +1367,8 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
     def _modified_pyparse_purity_for_row(self, row: Dict[str, object]) -> str:
         if self._analysis_is_invalidated(row, "modified"):
             return ""
+        if _normalize_well(row.get("pyparse_well", "")) in self.__dict__.get("peak_inspection_data", {}).get("missing_uv254", {}):
+            return "N/A"
         if getattr(self, "product_peak_overrides", {}):
             override = self._peak_override_purity(row)
             if override is not None:
@@ -1391,6 +1393,8 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
         if self._analysis_is_invalidated(row, "modified"):
             return "Reanalysis required (product/target edited)"
         purity = self._modified_pyparse_purity_for_row(row)
+        if purity == "N/A":
+            return "Unavailable (no UV254 chromatogram)"
         if getattr(self, "product_peak_overrides", {}) and self._peak_override_purity(row) is not None:
             return f"{purity} — {self._peak_assignment_description(row)}"
         if (
@@ -1418,7 +1422,7 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
         lcms_keys: Dict[str, str] = {}
         for row in self._pyparse_rows():
             purity = self._product_structure_purity_for_row(row)
-            if _numeric_percent_value(purity) is None:
+            if purity != "N/A" and _numeric_percent_value(purity) is None:
                 continue
             reaction_name = str(row.get("reaction_name", "") or "").strip() or "No reaction number"
             reaction_well = _normalize_well(row.get("reaction_well", ""))
@@ -5350,7 +5354,9 @@ class CheminformaticsFrame(PeakInspectionMixin, ttk.Frame):
             pyparse_value = "Reanalysis required (product/target edited)"
         modified_value = self._modified_pyparse_purity_display_for_row(row or {})
         self.product_structure_pyparse_purity_var.set(f"UV254 purity from PyParse: {pyparse_value}")
-        self.product_structure_modified_purity_var.set(f"UV254 purity from Modified PyParse: {modified_value}")
+        ions = self._peak_adduct_labels(row) if row and not self._analysis_is_invalidated(row, "modified") else []
+        suffix = "   " + "  ".join(ions) if ions else ""
+        self.product_structure_modified_purity_var.set(f"UV254 purity from Modified PyParse: {modified_value}{suffix}")
 
     def _clear_product_structure_trace_display(self):
         self._peak_unbind()

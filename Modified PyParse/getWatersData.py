@@ -134,7 +134,7 @@ def getUVData(spectrum):
         
     return UVmaxima            
 
-def getData(filename):
+def getData(filename, *, missing_uv=None):
     """
     Converts the input .rpt file into a dictionary where each index corresponds to a well.
     Each dictionary value contains a list of peaks, where each peak is represented as a dictionary
@@ -148,6 +148,7 @@ def getData(filename):
         
     """
     
+    skipped = {} if missing_uv is None else missing_uv
     wellData = []
     masterTable = {}
     chroma = {}
@@ -262,7 +263,7 @@ def getData(filename):
                     chromatograms = _uv254_chromatograms(chromatograms)
                 for chromatogram in chromatograms:
                     c_lines = chromatogram.split("\n")
-                    if "Description\tDAD:" in c_lines[3]:
+                    if "Description\tDAD:" in c_lines[3] and "[TRACE]" in chromatogram:
                         chroma[wellno]["uv"] = getChromatogram(chromatogram.split("[TRACE]")[1]) #get chromatogram for this well
                         wellpeaks = chromatogram.split("[PEAK]")[1:]
                         for peak in wellpeaks:
@@ -442,8 +443,13 @@ def getData(filename):
                     data = getUVData(spectrum)
                     peaks[retTime]["UV"] = data
             
-        if options.detector == "UV" and str(getattr(options, "uv254_purity", "False")) == "True" and not chroma[wellno]["uv"]:
-            raise ValueError(f"Well {wellno}: no identifiable 254 nm DAD chromatogram. Export a Waters RPT containing the 254 nm channel.")
+        if options.detector == "UV" and str(getattr(options, "uv254_purity", "False")) == "True" and not any(chroma[wellno]["uv"]):
+            position = re.search(r"^Well\s+([^\n]+)", functions[0], re.M)
+            sample = re.search(r"^Sample\s+([0-9]+)", functions[0], re.M)
+            skipped[wellno] = {"position": position.group(1).strip() if position else "",
+                               "sample": sample.group(1) if sample else str(i + 1)}
+            del chroma[wellno], sample_IDs[wellno]
+            continue
         logging.debug(f'{len(peaks)} peaks found in well {wellno}.')             
     
         #Filter out any peaks within retention times specified by the user
@@ -478,4 +484,6 @@ def getData(filename):
         
         masterTable[wellno] = peaks.values()  
 
+    if skipped and not masterTable:
+        raise ValueError("No sample contains an identifiable 254 nm DAD chromatogram. Export the 254 nm channel.")
     return [masterTable, chroma, sample_IDs, total_area_abs]

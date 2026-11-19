@@ -19,7 +19,7 @@ XinPilot's original code is licensed under Apache-2.0, copyright 2026 Xin Qiu.
 The root LICENSE and NOTICE record this decision. Retain all third-party terms.
 
 1. **License materials with binary distribution.** Include LICENSE, NOTICE and
-   applicable third-party notices with the executable distribution. The v1.2.6
+   applicable third-party notices with the executable distribution. The v1.2.7
    executable embeds these materials; the release also supplies a
    separate notices archive for convenient access.
 2. **Approved authors and citation details.** Add CITATION.cff with the real
@@ -34,10 +34,7 @@ The root LICENSE and NOTICE record this decision. Retain all third-party terms.
 5. **Experimental examples/SI, if desired.** Supply only the datasets authorized
    for publication. Private validation inputs were deliberately not included.
 
-This release is version 1.2.6, adding master-list Name/Nature updates, explicit
-solvent/concentration correction approval, acceptance of distinct physical stocks
-with identical contents, and rejection of repeated incoming IDs.
-Use the matching v1.2.6 tag and executable for publication. Keep VERSION,
+This release adds optional product-adduct matching in Modified PyParse and compatibility handling for the original PyParse subprocess. Use the matching v1.2.7 tag and executable. Keep VERSION,
 release documentation and Windows version metadata consistent in future releases.
 
 `SOURCE_SHA256.json` identifies distributed source files (excluding itself and

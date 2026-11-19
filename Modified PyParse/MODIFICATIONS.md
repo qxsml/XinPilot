@@ -46,3 +46,9 @@ The current integration writes numerical UV/MS peak bundles, distinguishes UV in
 ## 30 October 2026 attribution update
 
 Explicit Xin Qiu/XinPilot modification notices were added to all four files listed above. Existing upstream headers were retained. These notice additions do not change Python statements or analytical behavior. The separate bundled PyParse integration is documented in `../PyParse/MODIFICATIONS.md`.
+
+## v1.2.7 product adducts
+
+Xin Qiu added optional sodium and ammonium positive-ion matching for product analysis. Each target-well record stores the observed adduct labels by peak and the indices used in the automatic assignment.
+
+When a Waters report lacks a 254 nm chromatogram for an individual sample, Modified PyParse analyzes the usable wells. The LC-MS run status identifies skipped wells, and Product Details marks their UV254 value as unavailable. Analysis fails if every sample lacks the channel.

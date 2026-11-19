@@ -2024,6 +2024,9 @@ def _run_bundled_pyparse(kind: str, args: List[str]) -> int:
     if not script_path.exists():
         print(f"Bundled PyParse script was not found: {script_path}", file=sys.stderr)
         return 2
+    if kind == "standard":
+        from xinpilot.application.original_pyparse_runtime import run_engine
+        return run_engine(script_path, args)
     sys.path.insert(0, str(script_path.parent))
     sys.argv = [str(script_path)] + list(args)
     runpy.run_path(str(script_path), run_name="__main__")

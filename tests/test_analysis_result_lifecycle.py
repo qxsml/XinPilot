@@ -17,6 +17,15 @@ from integrated_full_software import IntegratedFullApp
 
 
 class AnalysisJobTests(unittest.TestCase):
+    def test_missing_uv_status_identifies_well_and_elapsed_time(self):
+        self.job.output_dir.mkdir(exist_ok=True)
+        (self.job.output_dir / 'xinpilot_analysis_warnings.json').write_text(
+            '{"missing_uv254": {"C7": {"sample": "example"}}}', encoding='utf-8')
+        self.frame._complete_job(self.job, 0, 12.5)
+        self.frame.result_callback.assert_called_once_with(self.job.output_dir, 'product')
+        self.frame.status_label.config.assert_called_with(
+            text='Completed with 1 warning (12.5s): UV254 unavailable for C7')
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

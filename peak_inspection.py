@@ -142,6 +142,17 @@ class PeakInspectionMixin:
         override = getattr(self, 'product_peak_overrides', {}).get(target, {}).get(label)
         return target, label, record, well, override
 
+    def _peak_adduct_labels(self, row):
+        _, _, record, _, override = self._peak_context(row)
+        if not record:
+            return []
+        evidence = record.get("peak_adducts", [])
+        indices = [override["peak_index"]] if override else record.get("assigned_peak_indices", [])
+        labels = {"[M+H]+": "+H", "[M+Na]+": "+Na", "[M+NH4]+": "+NH\u2084",
+                  "[M+2H]2+": "+2H (2+)", "[M+3H]3+": "+3H (3+)", "[M-H]-": "-H"}
+        matched = {ion for i in indices if type(i) is int and 0 <= i < len(evidence) for ion in evidence[i]}
+        return [label for ion, label in labels.items() if ion in matched]
+
     def _peak_override_purity(self, row):
         _, _, record, well, override = self._peak_context(row)
         if record and well and override:

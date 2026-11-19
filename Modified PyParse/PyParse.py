@@ -394,7 +394,10 @@ def findHits(compound, dataTable):
                             }
                     total_ms_plus = sum([i[1] for i in peak["MS+"]])
                    
+                    masses = [compound["mass1"], compound["mass2"], compound["mass3"]]
+                    extra_ions = list(_extra_ions(masses)) if compound.get("type") == "Product" else []
                     for [mass, intensity] in peak["MS+"]:
+                        before = len(mass_plus)
                         intensity_pc = intensity/total_ms_plus * 100
                         for idx, targetmass in enumerate([compound["mass1"], compound["mass2"], compound["mass3"]], start=1):
                             intensity_pc = intensity/total_ms_plus * 100
@@ -412,6 +415,14 @@ def findHits(compound, dataTable):
                                     isotope_match_detected = True
 
                                 
+                        if extra_ions:
+                            for mass_index, mz, _ in extra_ions:
+                                if math.isclose(mz, mass, abs_tol=options.mass_abs_tol):
+                                    mass_plus.append([mass, intensity_pc])
+                                    isotope_match_detected |= mass_index == 1
+                            # Count one observed centroid once in extended matching.
+                            del mass_plus[before + 1:]
+
                     total_ms_minus = sum([i[1] for i in peak["MS-"]])        
                     for [mass, intensity] in peak["MS-"]:
                         for targetmass in [compound["mass1"], compound["mass2"], compound["mass3"]]:
@@ -2082,6 +2093,17 @@ def _higher_positive_ions_enabled():
     return str(getattr(current_options, "calc_higherions", "True")) == "True"
 
 
+EXTRA_POSITIVE_ADDUCTS = {"na": (22.989218, "[M+Na]+"), "nh4": (18.033823, "[M+NH4]+")}
+
+
+def _extra_ions(masses):
+    for key in getattr(globals().get("options"), "product_adducts", ()) or ():
+        shift, label = EXTRA_POSITIVE_ADDUCTS[key]
+        for index, mass in enumerate(masses):
+            if mass > 0:
+                yield index, round(mass + shift, 2), label
+
+
 def _target_ion_specs(neutral_masses, polarity, include_higher_charges=None):
     """Describe every ion state that product identification may accept."""
     neutral_values = [float(value) for value in (neutral_masses or [])]
@@ -2098,7 +2120,8 @@ def _target_ion_specs(neutral_masses, polarity, include_higher_charges=None):
             }
             for neutral_mass in neutral_values
             for charge in charges
-        ]
+        ] + [{"polarity": "+", "charge": 1, "target_mass": mz, "adduct": label}
+             for _, mz, label in _extra_ions(neutral_values)]
     if polarity == "-":
         return [
             {
@@ -3788,6 +3811,7 @@ def main():
     parser.add_argument("-spp", "--split_product_peaks", action="store", type=str, dest = "split_product_peaks",
                         help = "True/False: keep all product peaks (same desired mass) per well instead of selecting only one.")
 
+    parser.add_argument("--product-adducts", nargs="+", choices=tuple(EXTRA_POSITIVE_ADDUCTS), default=[])
     parser.add_argument("-spa", "--strict_product_assignment", action="store", type=str, dest = "strict_product_assignment",
                         help = "True/False: enforce stricter product picking (tighter mass/RT behavior, avoid ambiguous auto-picks).")
     
@@ -3904,9 +3928,19 @@ def main():
 
     #Depending on the instrument specified, fetch the LCMS data and convert it to the 
     #correct format. 
+    missing_uv = {}
     if options.instrument == "Waters":
         getWatersData.init(options)
-        [dataTable, chroma, sample_IDs, total_area_abs] = getWatersData.getData(root_names[0])
+        [dataTable, chroma, sample_IDs, total_area_abs] = getWatersData.getData(root_names[0], missing_uv=missing_uv)
+        if missing_uv:
+            warnings = {getUserReadableWell(n): details for n, details in missing_uv.items()}
+            with open(f'{save_dir}xinpilot_analysis_warnings.json', 'w', encoding='utf-8') as handle:
+                json.dump({"missing_uv254": warnings}, handle)
+            for label, details in warnings.items():
+                message = (f"UV254 unavailable for {label} (Waters position {details['position']}, "
+                           f"sample {details['sample']}). Skipped this sample.")
+                logging.warning(message)
+                print(message)
         times["Import RPT File"] = time.perf_counter() - pre_rpt 
         logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
     elif options.instrument == "Shimadzu":
@@ -4282,6 +4316,8 @@ def main():
         # Enhancement: plot chromatogram panels for all submitted wells for this compound
         try:
             for target_well in row["locations"]:
+                if target_well in missing_uv:
+                    continue
                 annotate_peaks_all = []
                 for bindex, brow in compoundDF.iterrows():
                     data = [i for i in brow["hits"]["green"] if i["well"] == target_well]
@@ -4374,6 +4410,16 @@ def main():
                     inspection["targets"].setdefault(target_key, {})[well_label] = {
                         "name": row["name"], "ranges": highlight_ranges,
                         "automatic_purity": this_purity_map[well_label],
+                        "peak_adducts": [
+                            list(dict.fromkeys(ion["adduct"] for ion in _observed_product_ions(
+                                peak, target_masses, options.mass_abs_tol, min_relative_intensity=0)))
+                            for peak in dataTable.get(target_well, [])
+                        ],
+                        "assigned_peak_indices": [
+                            i for i, peak in enumerate(dataTable.get(target_well, []))
+                            if any(peak is _matching_raw_peak(dataTable.get(target_well, []), hit)
+                                   for hit in (selected_product_hits or []))
+                        ],
                         "assignment_conflict": row.get("assignment_conflicts", {}).get(well_label, ""),
                     }
 
@@ -4426,7 +4472,9 @@ def main():
     except Exception:
         logging.exception("Could not generate combined impurity summary traces.")
 
-    if inspection["targets"]:
+    if missing_uv:
+        inspection["missing_uv254"] = warnings
+    if inspection["targets"] or missing_uv:
         for wells in inspection["targets"].values():
             for label, record in wells.items():
                 record["geometry"] = trace_geometry.get((record["name"], label), {})
@@ -4480,6 +4528,8 @@ def main():
     pre_csvs = time.perf_counter()
     if options.gen_csv == "True":
         outputTable_for_csv = outputTable.drop(columns=["Purity254"], errors="ignore")
+        if missing_uv:
+            outputTable_for_csv = outputTable_for_csv.loc[~outputTable_for_csv["Well"].isin(warnings)]
         csv = outputTable_for_csv.to_csv(f'{save_dir}outputTable.csv', index = False)
         newslice = compoundDF.loc[:, ["name", "g_smiles", "mass1", "mass2", "mass3",
                                 "time", "mass-", "mass+", "best_well", "best_purity", "best_purity254",

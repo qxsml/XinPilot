@@ -12,12 +12,29 @@ def main(report_path):
     from desktop.live_app import LiveBridge, html
     import webview
 
+    import tempfile, zipfile
+    scratch = tempfile.TemporaryDirectory()
+    fixture = Path(scratch.name) / "peak-inspection-portable.zip"
+    with zipfile.ZipFile(ROOT / "tests/fixtures/peak-inspection-portable.zip") as src, zipfile.ZipFile(fixture, "w") as dst:
+        for name in src.namelist():
+            content = src.read(name)
+            if name == "project.json":
+                state = json.loads(content)
+                chem = state["cheminformatics"]
+                chem["product_peak_overrides"] = {}
+                for wells in chem["peak_inspection_data"]["targets"].values():
+                    for rec in wells.values():
+                        rec.update(assigned_peak_indices=[0], peak_adducts=[["[M+H]+","[M+Na]+","[M+NH4]+"], []])
+                content = json.dumps(state).encode()
+            dst.writestr(name, content)
+
     class FixtureBridge(LiveBridge):
         def file_dialog(self, token):
-            path = ROOT / "tests/fixtures/peak-inspection-portable.zip"
+            path = fixture
             return self.event({"action": "answer", "id": token, "value": str(path)})
 
-    layout_file = Path(sys.executable).resolve().parent / "outputs/peak_inspection_layout.json"
+    app_dir = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else ROOT
+    layout_file = app_dir / "outputs/peak_inspection_layout.json"
     saved_layout = layout_file.read_bytes() if layout_file.exists() else None
     layout_file.parent.mkdir(parents=True, exist_ok=True)
     layout_file.write_text("{}", encoding="utf-8")
@@ -92,6 +109,21 @@ def main(report_path):
                 "[...document.querySelectorAll('.label img')].every(i=>i.complete&&i.naturalWidth>0)"
             )
             assert report["traces_loaded"]
+            label_js = "[...document.querySelectorAll('.label')].find(e=>e.textContent.startsWith('UV254 purity from Modified') && e.getBoundingClientRect().width)"
+            def check_line():
+                wait(label_js + "?.textContent.includes('+Na')")
+                geometry = js("(()=>{const e=" + label_js + ";const r=document.createRange();r.selectNodeContents(e);const lines=[...r.getClientRects()].filter(v=>v.width);const box=e.getBoundingClientRect();return {text:e.textContent,lines:new Set(lines.map(v=>Math.round(v.top))).size,fits:lines.every(v=>v.left>=box.left-1 && v.right<=box.right+1)}})()")
+                assert geometry["lines"] == 1 and geometry["fits"], geometry
+                return geometry
+            window.maximize()
+            time.sleep(.5)
+            report["adduct_line_maximized"] = check_line()
+            window.restore()
+            window.resize(850, 600)
+            time.sleep(.5)
+            report["adduct_line_minimum"] = check_line()
+            window.resize(1280, 850)
+            time.sleep(.5)
             js(
                 "(()=>{const n=[...document.querySelectorAll('.label')].find(n=>n.textContent.startsWith('UV trace from Modified')).nextElementSibling;const r=n.getBoundingClientRect();n.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:0,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})()"
             )
@@ -124,10 +156,12 @@ def main(report_path):
             click("Assign as product")
             wait("document.querySelector('.toplevel').textContent.includes('UV254 purity: 70%')")
             js("document.querySelectorAll('.toplevel .tree tbody tr')[1].click()")
-            time.sleep(0.4)
+            wait("document.querySelector('.toplevel').textContent.includes('Inspected peak: 2 min')")
             click("Assign as product")
             wait("document.querySelector('.toplevel').textContent.includes('UV254 purity: 30%')")
+            wait("!(" + label_js + ")?.textContent.includes('+Na')")
             click("Restore automatic assignment")
+            wait(label_js + "?.textContent.includes('+Na')")
             wait("document.querySelector('.toplevel').textContent.includes('UV254 purity: 70%')")
             report["manual_assignment_and_restore"] = [70, 30, 70]
             js(
@@ -221,5 +255,6 @@ def main(report_path):
                 layout_file.unlink()
 
     webview.start(check, gui="edgechromium")
+    scratch.cleanup()
     print(json.dumps(report))
     return int(report.get("status") != "PASS")

@@ -8,8 +8,8 @@ The application combines a TypeScript user interface with Python-based chemistry
 
 ## Getting started
 
-Current source release: **1.2.6**. See the [release notes](docs/release-1.2.6.md)
-for master-list update and duplicate-ID protections.
+Current source release: **1.2.7**. See the [release notes](docs/release-1.2.7.md)
+for optional product-adduct matching and original PyParse runtime compatibility.
 
 ### Download and run
 
@@ -95,7 +95,11 @@ Reaction wells can be mapped to LC–MS sample positions, with expected product 
 
 XinPilot incorporates the original [PyParse](https://github.com/thatchemistryguy/PyParse) software alongside modified workflows derived from PyParse for product and impurity analysis.
 
+In Modified PyParse product analysis, select Sodium or Ammonium under Run options to include those positive-ion adducts. Matched ions appear beside the assigned peak's UV254 area percentage in Product Details. Both options default to off.
+
 Dedicated graphical user interfaces have been developed for both the original and modified PyParse workflows, allowing their analytical functionality to be accessed within the XinPilot environment.
+
+XinPilot runs the bundled original engine in a separate process. Its compatibility adapter preserves blank platemap cells alongside numeric values and leaves all-zero pie charts empty. Peak assignment and area calculations use the original PyParse implementation.
 
 The original PyParse software is distributed under the Apache License 2.0 license. We acknowledge its original authors and refer users to the associated publication:
 
@@ -111,6 +115,8 @@ For supported Waters LC–MS reports, XinPilot provides:
 - **Modified PyParse workflows:** Customized analytical functionality integrated into the XinPilot environment.
 
 UV area percentages represent chromatographic area fractions and should not be interpreted as isolated yields or quantitative reaction conversions.
+
+If a Waters sample lacks a 254 nm chromatogram, Modified PyParse lists the affected well in the analysis log and continues with the usable wells. Product Details displays the missing UV254 result as unavailable.
 
 #### AutoLynx export
 

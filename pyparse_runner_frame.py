@@ -44,6 +44,7 @@ class PyParseRunnerFrame(ttk.Frame):
         self.output_dir_var = tk.StringVar(value="")
         self.instrument_var = tk.StringVar(value="Waters")
         self.detector_var = tk.StringVar(value="UV")
+        self.product_adduct_vars = {key: tk.BooleanVar(value=False) for key in ("na", "nh4")}
         self.analysis_name_var = tk.StringVar(value="")
         self.split_product_peaks_var = tk.BooleanVar(value=False)
         self.strict_product_assignment_var = tk.BooleanVar(value=True)
@@ -75,6 +76,8 @@ class PyParseRunnerFrame(ttk.Frame):
             split = ttk.Checkbutton(opts, text="Split product peaks", variable=self.split_product_peaks_var)
             split.grid(row=0, column=0, columnspan=4, sticky="w", padx=4)
             split._xinpilot_tooltip = Tooltip(split, "Keep multiple accepted product peaks in each well and sum their areas and purity contribution. Leave off to select one peak. Matching masses alone do not confirm chemical identity.")
+            for col, (key, label) in enumerate((("na", "Sodium [M+Na]+"), ("nh4", "Ammonium [M+NH4]+"))):
+                ttk.Checkbutton(opts, text=label, variable=self.product_adduct_vars[key]).grid(row=1, column=col, sticky="w", padx=4)
             exclude_label = ttk.Label(opts, text="UV254 exclude RT")
             exclude_label.grid(row=2, column=0, sticky="w", padx=4, pady=3)
             exclude_label._xinpilot_tooltip = Tooltip(exclude_label, "Exclude whole peaks overlapping these retention-time ranges from UV purity, for example 0.0-0.8 3.2-3.8 (minutes). This does not remove peaks from identification or erase the original trace.")
@@ -166,6 +169,7 @@ class PyParseRunnerFrame(ttk.Frame):
             "strict_product_assignment": bool(self.strict_product_assignment_var.get()),
             "uv254_exclude_rt": self.uv254_exclude_rt_var.get(),
             "product_isotope_rt_block": self.product_isotope_rt_block_var.get(),
+            "product_adducts": [key for key, var in self.product_adduct_vars.items() if var.get()],
             "analysis_name": self.analysis_name_var.get(),
         }
 
@@ -186,6 +190,8 @@ class PyParseRunnerFrame(ttk.Frame):
             self.strict_product_assignment_var.set(True)
             self.uv254_exclude_rt_var.set(str(data.get("uv254_exclude_rt", "") or ""))
             self.product_isotope_rt_block_var.set(str(data.get("product_isotope_rt_block", "") or ""))
+            for key, var in self.product_adduct_vars.items():
+                var.set(key in (data.get("product_adducts") or []) and self.modified and self.analysis_kind != "impurity")
             self.analysis_name_var.set(str(data.get("analysis_name", "") or ""))
         finally:
             self._suspend_platemap_invalidation = False
@@ -313,6 +319,9 @@ class PyParseRunnerFrame(ttk.Frame):
                 "-spp", str(self.split_product_peaks_var.get() if self.analysis_kind != "impurity" else False),
                 "-spa", "True",
             ]
+            adducts = [key for key, var in self.product_adduct_vars.items() if var.get()]
+            if self.analysis_kind != "impurity" and adducts:
+                base += ["--product-adducts", *adducts]
             if self.analysis_kind != "impurity" and self.uv254_exclude_rt_var.get().strip():
                 base += ["-u254x", self.uv254_exclude_rt_var.get().strip()]
             if self.analysis_kind != "impurity" and self.product_isotope_rt_block_var.get().strip():
@@ -324,6 +333,9 @@ class PyParseRunnerFrame(ttk.Frame):
             return [sys.executable, "--oneclick-run-pyparse", runner] + base
         if target.lower().endswith(".exe"):
             return [target] + base
+        if not self.modified and Path(target).resolve() == self.default_target.resolve():
+            from xinpilot.application import original_pyparse_runtime
+            return [sys.executable, original_pyparse_runtime.__file__, target] + base
         return [sys.executable, target] + base
 
     def _standard_pyparse_platemap(self) -> str:
@@ -467,6 +479,15 @@ class PyParseRunnerFrame(ttk.Frame):
             self.log.see("end")
         elif rc == 0 and self.result_callback:
             self.result_callback(job.output_dir, job.analysis_kind)
+            warning_file = job.output_dir / "xinpilot_analysis_warnings.json"
+            if job.analysis_kind in ("product", "impurity") and warning_file.is_file():
+                with warning_file.open(encoding="utf-8") as handle:
+                    missing = json.load(handle).get("missing_uv254", {})
+                if missing:
+                    labels = list(missing)
+                    wells = ", ".join(labels[:4]) + (" and others" if len(labels) > 4 else "")
+                    self.status_label.config(text=f"Completed with {len(labels)} warning{'s' if len(labels) != 1 else ''} "
+                                                  f"({elapsed:.1f}s): UV254 unavailable for {wells}")
         elif rc != 0:
             messagebox.showerror(f"{self.title} failed", "The run ended with an error. Check the log panel.")
 

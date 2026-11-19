@@ -1,5 +1,5 @@
 {
-  "version": "1.2.6",
+  "version": "1.2.7",
   "files": {
     ".gitattributes": {
       "sha256": "e091a3d053a872ac44788654a16a321ded25623e3a9376b2e0b972f347e6571c",
@@ -150,11 +150,11 @@
       "bytes": 260
     },
     "cheminformatics_frame.py": {
-      "sha256": "4072a53c8ca4ab4bf6cbbb445cf0e910bd0e6a0c8fef708817adcec222090801",
-      "bytes": 338114
+      "sha256": "28a345991e20e7cca91e1ff43ea69b65bb67235518b8166fbd376f5d437c2bcf",
+      "bytes": 338561
     },
     "CITATION.cff": {
-      "sha256": "06a1ec690bba430d4c0e1c65b287d9ac4a826eb0b8af2d8a0c772fce44fbc640",
+      "sha256": "1320f7fc02bb26a6e6c67ba9ddf1396ba9bcefd3f239b670bcde88340612c450",
       "bytes": 308
     },
     "compound_notes_frame.py": {
@@ -258,8 +258,8 @@
       "bytes": 272
     },
     "desktop/packaged_check.py": {
-      "sha256": "626cb88c29ae4fdd51f5bea9e458122ed180e06d86b3a95a127adadd44288c91",
-      "bytes": 12830
+      "sha256": "0686b549b6dd3f9fdf50aa18c7e804670d6f76d94ee9c9696b5de71a5f5970ea",
+      "bytes": 15021
     },
     "desktop/protocol.py": {
       "sha256": "aa86a4892c5a913ffd25dcb83805be7a41ffc52ce1fe51debc6f3ae458f76ae1",
@@ -322,12 +322,16 @@
       "bytes": 2774
     },
     "docs/publication.md": {
-      "sha256": "3cda860f8560f305e924104ada08b1005909f30421cfd98bb615f25561aa70e8",
-      "bytes": 3071
+      "sha256": "c97204390d8290e5d0468be94cfd3d78590f6f479bd391aad30e12716451e32f",
+      "bytes": 2960
     },
     "docs/publish-1.2.6.md": {
       "sha256": "7179d2e49b2ae81c4a4879d1147cbb3a98247651c4bb1a32769eb29d7fa2ed37",
       "bytes": 2232
+    },
+    "docs/publish-1.2.7.md": {
+      "sha256": "0203e529fc7b2d08371b5e573c74931283f9ea9a87c022765c381482e254e0a0",
+      "bytes": 381
     },
     "docs/release-1.0.1.md": {
       "sha256": "e38196cf4d853ffaaa8dc5846411f307e302a133f639925347c93bf7b4923202",
@@ -373,6 +377,10 @@
       "sha256": "ab4ffcf399565b31bb49a2d9842d41266b3c902a1ed2f8f80b821aaf38cd7532",
       "bytes": 1253
     },
+    "docs/release-1.2.7.md": {
+      "sha256": "9978b830062ce2080c8c72c830cfea52cbf32967aa8cca1a3023ecd3f5dcc91c",
+      "bytes": 1195
+    },
     "docs/review-fixes-2026-10-02.md": {
       "sha256": "998a9a39f0dbc9237bdd5135f29f52e57ab8fdea432fcf14348b5cf630267fa8",
       "bytes": 3179
@@ -417,6 +425,10 @@
       "sha256": "11cd860cc74e10c2d799f92d4f87c9a088a6be88cf080f46599c3309e59ce4f3",
       "bytes": 2528
     },
+    "docs/validation-1.2.7.md": {
+      "sha256": "df21b67a8f1f6f7e158fd0cac62e0d971f7e01098808046037894344c8e279a3",
+      "bytes": 1535
+    },
     "docs/validation-external-import.md": {
       "sha256": "23bde251712eaf2d1bc8bd299de58972acb94cbb059902cb026d4dd3f766094d",
       "bytes": 8089
@@ -442,8 +454,8 @@
       "bytes": 25000
     },
     "integrated_full_software.py": {
-      "sha256": "53314cca5c678b04197b839af8381378cf1865126153ca0e251e2d15e94b0d69",
-      "bytes": 101356
+      "sha256": "e7ceb37e22ebe04bebbc10653e922a8c7f78d4ae1399e437f3f79a03ba07b064",
+      "bytes": 101505
     },
     "integrated_tecan_compound_cheminformatics.py": {
       "sha256": "2cfd259d992c2044f5cea07b34db9fc67b5319e3989e866b2a331c6fc4c72ecd",
@@ -502,16 +514,16 @@
       "bytes": 9455
     },
     "Modified PyParse/getWatersData.py": {
-      "sha256": "64f1a3907b87f4a7d344108ed866c42b455d0cda6948ac0c8873aa363f32bd75",
-      "bytes": 23655
+      "sha256": "4cb36890baf918ced60b00a70e8c75368fc38682f090eb10ca84f288d1112f1f",
+      "bytes": 24178
     },
     "Modified PyParse/MODIFICATIONS.md": {
-      "sha256": "605a47c3ee55586902fdb7426118f11688ec252cd90c0158a8ca1695f61a4cbd",
-      "bytes": 2982
+      "sha256": "4b769a88b8435d377ffd6937e27ccfaf9bc7677fd871634d83b071345c85c2b4",
+      "bytes": 3496
     },
     "Modified PyParse/PyParse.py": {
-      "sha256": "b8ec5e680e636b9638bed144903eeff34550d175d3c90fc98b78cdac17700e6e",
-      "bytes": 208557
+      "sha256": "3545d7c16d3d51fc6515742908ce5ebf2f8c4ebff0c1d36e643495a1ffae065e",
+      "bytes": 211541
     },
     "Modified PyParse/templates/html_template.html": {
       "sha256": "8c129d9ab805135ae800e61cf8e184cfa492d3abc0aff2be24ea98e13d84b012",
@@ -534,15 +546,15 @@
       "bytes": 379164
     },
     "packaging/README.md": {
-      "sha256": "9df610f88bec231c7172b569eb55f2572f78c890572e74001a7b222012c3b5e5",
+      "sha256": "a75f1bc618842e3ee97a34d1bf83991f4d2294ee4bffa039735622278d5fe0ea",
       "bytes": 1932
     },
     "packaging/TypeScript.spec": {
-      "sha256": "949a3c0dd93131b6a2ae21ad5100c9b64df5105b1a68d73513ce27fbb58c06d1",
+      "sha256": "1af83f186e001cdaf0966bafa7170921e18866593898b9c5e4d0d1d3a3a91a6c",
       "bytes": 3135
     },
     "packaging/version_info.txt": {
-      "sha256": "e4c664e3c800070a7cb44e84b5ae621b48f70a6ec21a04bc61a63e24e4447abe",
+      "sha256": "de89be628a1333503af3e854ba6c14149a57c982fd8e03fad42c635dc0e94abc",
       "bytes": 535
     },
     "page_presentation.py": {
@@ -550,8 +562,8 @@
       "bytes": 2334
     },
     "peak_inspection.py": {
-      "sha256": "164110511688aad7448913562a68b26f2fa5d94452f1abffd1d4987de7d80399",
-      "bytes": 27536
+      "sha256": "412981b796a2c6001f3980ed8a527c5380a47e4c02fd1a586bdd3ca4c8f1cf33",
+      "bytes": 28186
     },
     "project_change_tracking.py": {
       "sha256": "5c7f1f7106f347448087ed1bf3dc4be4fa4241706ccbdb4f6898e247bde777b3",
@@ -590,8 +602,8 @@
       "bytes": 549
     },
     "pyparse_runner_frame.py": {
-      "sha256": "f8233b8a53a96023338e0b400cef182a27d3fe85e619e7fbe89912eca9a83f47",
-      "bytes": 25642
+      "sha256": "48c4b78aa232a0395d16e6af0c8f763b03cc558ba331597fabcf324bd659d0dc",
+      "bytes": 27434
     },
     "pyproject.toml": {
       "sha256": "16fda0ed57f0007d5734088aac1b85e09b83bca9eeb9e422219570c4fe862695",
@@ -602,8 +614,8 @@
       "bytes": 77385
     },
     "README.md": {
-      "sha256": "592e44a74264597d2f47029a9424255a62e9bdfc12a38ecd9521aa42f1b6a4f2",
-      "bytes": 11460
+      "sha256": "0622c4095745d40141615941394892257f1892c1b752f734c8c6009a31e42b36",
+      "bytes": 12212
     },
     "requirements-dev.txt": {
       "sha256": "0d9ff3c86b35c49ad07375739e013d99ec91c3cf09dd2f34ba85f190bf2a1ad0",
@@ -762,8 +774,8 @@
       "bytes": 9825
     },
     "tests/test_analysis_result_lifecycle.py": {
-      "sha256": "8330f42dc335a079777d476a5634a906f3d19089caced4ef11289efca0baaf82",
-      "bytes": 11897
+      "sha256": "25c6ba949a771f8923c6cc8a79ea3f173d9823aa163baa4bbe7e8f6dc148c331",
+      "bytes": 12459
     },
     "tests/test_architecture_boundaries.py": {
       "sha256": "e38ef8ed8abad1aca3d9000cf1d716aadc40325288fb925731efcc29c15f8abc",
@@ -905,9 +917,17 @@
       "sha256": "01be8afb650e977d8e06f2e4ba6adc13a2351597b6e48c7435f025a5198c7747",
       "bytes": 669
     },
+    "tests/test_original_pyparse_runtime.py": {
+      "sha256": "d9dbeca06859fb2293eda227db94e199cff69d1eeb546fbc33ffcbe21cad4820",
+      "bytes": 1085
+    },
     "tests/test_portable_gwl_project.py": {
       "sha256": "9c8cd2744f3359b15e643d61609408b56468a9f2e50ec3f000b60784fdf50fab",
       "bytes": 3778
+    },
+    "tests/test_product_adducts.py": {
+      "sha256": "a30a82e6c8b4f377e5ad94800dedf35eea20895d1badfd1c0315eb5e5b2c8471",
+      "bytes": 6184
     },
     "tests/test_product_detail_manual_edit.py": {
       "sha256": "46c0b7131ad5088f4436471dcdb4441aa229adae919e5be457e660c6a43ce399",
@@ -1358,7 +1378,7 @@
       "bytes": 8372
     },
     "VERSION": {
-      "sha256": "22630447b8d9504f4347722e0003c4ae1f243117b5a78e2ed6294cd0b2fb2493",
+      "sha256": "b9e8f5ee913bc4779f4df1ff90fb4719957316a7b8c8b32430e25f41482cae68",
       "bytes": 7
     },
     "well_map.py": {
@@ -1412,6 +1432,10 @@
     "xinpilot/application/opentrons_validation.py": {
       "sha256": "0c1e423e098d5752a82afbd1f2de42f8904625844304f29a9765b89ee4903503",
       "bytes": 22449
+    },
+    "xinpilot/application/original_pyparse_runtime.py": {
+      "sha256": "7280e26a7516cd61c3e13781d36bdd5fceea950afd82d0106ade809e80f04193",
+      "bytes": 1446
     },
     "xinpilot/application/project_archive.py": {
       "sha256": "33c1a7fb99d90d9f7b5283cd775a257f4791fae0f43b3cc92772c269e63215ac",
